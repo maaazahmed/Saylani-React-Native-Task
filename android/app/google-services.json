@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "463609736874",
+    "firebase_url": "https://new-todo-project.firebaseio.com",
+    "project_id": "new-todo-project",
+    "storage_bucket": "new-todo-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463609736874:android:786eaceb8ea82c7c",
+        "android_client_info": {
+          "package_name": "com.familytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463609736874-mqjp8slc1mld59nh6vpdogtomh4lm1tq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE1pJzQTbGTrQjzDXlV7FXzqTaxiCo914"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
