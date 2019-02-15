@@ -44,5 +44,24 @@ export const servicesACtion = (data) => {
     }
 }
 
+export const choseServisesAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.CHOSE_SERVICE,
+            payload: data
+        })
+    }
+}
+
+
+export const myOrderAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MY_ORDERS,
+            payload: data
+        })
+    }
+}
+
 
 

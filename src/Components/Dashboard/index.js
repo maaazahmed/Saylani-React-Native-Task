@@ -15,6 +15,7 @@ import { connect } from "react-redux"
 import { categoryListAction } from "../../store/action/action"
 import Home from "./Home/index"
 import Profile from "./Profile/index"
+import RequestComponent from "./Request/index"
 
 
 // class Dashboard extends Component {
@@ -150,7 +151,7 @@ export default class exampleTabs extends Component {
                     // {this.state.page === "HomeScreen" && <MyComp navigation={this.props.navigation}>Screen1</MyComp>}
                 }
                 {this.state.page === "HomeScreen" && <Home navigation={this.props.navigation} />}
-                {this.state.page === "NotificationScreen" && <Text>Screen4</Text>}
+                {this.state.page === "NotificationScreen" && <RequestComponent/>}
                 {this.state.page === "ProfileScreen" && <Profile navigation={this.props.navigation} />}
                 {this.state.page === "ChatScreen" && <Text>Screen4</Text>}
                 {this.state.page === "SearchScreen" && <Text>Screen5</Text>}

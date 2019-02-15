@@ -59,7 +59,7 @@ class Profile extends Component {
             phoneNumber: this.state.phonNumerVale,
             uid: currentUser.uid
         }
-        fetch("http://192.168.100.29:8000/nhoneNumberEdit"
+        fetch("http://192.168.100.153:8000/nhoneNumberEdit"
             , {
                 method: "post",
                 body: JSON.stringify(obj),

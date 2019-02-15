@@ -7,14 +7,16 @@ import {
     Image,
     FlatList,
     Dimensions,
-
 } from 'react-native';
 import { Icon } from "native-base"
 import { connect } from "react-redux"
-import { categoryListAction, servicesACtion } from "../../../store/action/action"
+import {  servicesACtion, choseServisesAction } from "../../../store/action/action"
 
 
-const {  height } = Dimensions.get("window")
+
+
+
+const { height } = Dimensions.get("window")
 class ViewCategory extends Component {
     componentWillMount() {
         const currentCategory = this.props.currentCategory.currentCategory;
@@ -36,10 +38,16 @@ class ViewCategory extends Component {
         })
     }
 
+    choseServises(data) {
+        console.log(data,"DATA")
+         this.props.choseServisesAction(data)
+         this.props.navigation.navigate("Hiring")
+    }
+
 
     render() {
         let serviceList = this.props.serviceList.serviceList;
-        console.log(serviceList,"serviceList")
+        console.log(serviceList, "serviceList")
         return (
             <View style={{ flex: 1, backgroundColor: "#f2f2f2" }} >
                 <View style={{ flex: 1, zIndex: 0, backgroundColor: "#512da7" }}>
@@ -79,41 +87,33 @@ class ViewCategory extends Component {
                             renderItem={({ item, index }) => {
                                 return (
                                     <View key={index} style={{
-                                        backgroundColor: "#fff", height: 120, padding: 5, borderRadius: 2,
+                                        backgroundColor: "#fff", padding: 5, borderRadius: 2,
                                         marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, flexDirection: "row"
                                     }} >
-                                        <View style={{
-                                            width: "25%",
-                                            justifyContent: "center",
-                                            alignItems: "center"
-                                        }} >
+                                        <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }} >
                                             <Image
-                                                style={{
-                                                    height: "75%",
-                                                    width: "75%", 
-                                                    borderRadius: height,
-
-                                                }}
-                                                resizeMode={"center"}
+                                                style={{ height: 70, width: 70, borderRadius: height }} resizeMode={"stretch"}
                                                 source={{ uri: item.serviceProvider.profilePic }} />
                                         </View>
                                         <View style={{ flex: 1, marginLeft: 10 }} >
                                             <View style={{ padding: 5 }} >
-                                                <Text style={{ color: "#1f1f1f", fontSize: 19, fontWeight: "400" }}>{item.categoryVal}</Text>
+                                                <Text style={{ color: "#1f1f1f", fontSize: 19, fontWeight: "400" }}>{item.serviceProvider.username}</Text>
+                                            </View>
+                                            <View style={{ flex: 1, paddingLeft: 5, justifyContent: "center", }} >
+                                                <Text note style={{ color: "#383a3c", }}>{item.discription}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1, alignItems: "center" }} >
-                                                <Text style={{ color: "#383a3c", fontSize: 15, }}>{"Services"}</Text>
-                                                {/* <TouchableOpacity activeOpacity={0.5} style={{
-                                                    backgroundColor: "#6144b3", borderRadius: 50,
-                                                    padding: 7, width: 100, flexDirection: "row", justifyContent: "space-around",
-                                                    alignItems: "center", marginRight: -15,
-                                                }} >
-                                                    <Text style={{ fontSize: 14, color: "#fff", fontWeight: "300" }} >See</Text>
-                                                    <Icon name="eye" style={{ color: "#fff", fontSize: 17, }} />
-                                                </TouchableOpacity> */}
-                                            </View>
-                                            <View style={{ flex: 1, padding: 5, justifyContent: "center", evolution: 5 }} >
-                                                <Text style={{ color: "#383a3c", fontSize: 15, }}>{item.dicription}</Text>
+                                                <TouchableOpacity
+                                                    onPress={this.choseServises.bind(this,item)}
+                                                    activeOpacity={0.5} style={{
+                                                        backgroundColor: "#6144b3", borderRadius: 4,
+                                                        padding: 4, width: 100, flexDirection: "row", justifyContent: "space-around",
+                                                        alignItems: "center",
+                                                        margin: 10
+                                                    }} >
+                                                    <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Hire me</Text>
+                                                    {/* <Icon name="eye" style={{ color: "#fff", fontSize: 17, }} /> */}
+                                                </TouchableOpacity>
                                             </View>
                                         </View>
                                     </View>
@@ -139,12 +139,13 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        categoryListAction: (data) => {
-            dispatch(categoryListAction(data))
+        choseServisesAction: (data) => {
+            dispatch(choseServisesAction(data))
         },
         servicesACtion: (data) => {
             dispatch(servicesACtion(data))
         },
+        
     };
 };
 

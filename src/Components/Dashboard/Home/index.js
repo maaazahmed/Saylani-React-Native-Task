@@ -23,7 +23,7 @@ class Home extends Component {
         })
             .then((suc) => {
                 const data = JSON.parse(suc._bodyInit)
-                // console.log(data)
+                console.log(data)
                 this.props.categoryListAction(data)
             })
             .catch((err) => { console.log(err) })

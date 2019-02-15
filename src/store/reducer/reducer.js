@@ -3,8 +3,10 @@ import ActionTypes from '../constant/constant';
 const INITIAL_STATE = {
     cagoryList: [],
     serviceList: [],
+    myOrders: [],
     currentUser: {},
-    currentCategory: {}
+    currentCategory: {},
+    choseServises: {}
 }
 
 
@@ -31,6 +33,16 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 serviceList: action.payload
+            })
+        case ActionTypes.CHOSE_SERVICE:
+            return ({
+                ...state,
+                choseServises: action.payload
+            })
+        case ActionTypes.MY_ORDERS:
+            return ({
+                ...state,
+                myOrders: action.payload
             })
         default:
             return state;

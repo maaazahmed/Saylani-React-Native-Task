@@ -194,14 +194,14 @@ router.post("/addService", (req, res) => {
 
 router.post("/getServieces", (req, res) => {
     console.log(req.body.id)
-    
+
     db.connect(url, (err, suc) => {
         if (err) {
             res.send(err)
         }
         else {
             const dbo = suc.db("learn_mongodb")
-            dbo.collection("Services").find({categoryID:req.body.id}).toArray((err2, data) => {
+            dbo.collection("Services").find({ categoryID: req.body.id }).toArray((err2, data) => {
                 if (err2) throw err2;
                 res.send(data)
             })
@@ -210,6 +210,112 @@ router.post("/getServieces", (req, res) => {
 })
 
 
+
+router.post("/myOrders", (req, res) => {
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("orders").insert(req.body, (error, succes) => {
+                if (error) throw error;
+                else {
+                    res.send({
+                        Message: "Data Save"
+                    })
+                }
+            })
+        }
+    })
+})
+
+
+
+
+
+
+router.post("/getMyOrders", (req, res) => {
+    console.log(req.body.uid)
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("orders").find({ selectedPerson: req.body.uid }).toArray((err2, data) => {
+                if (err2) throw err2;
+                suc.close(() => {
+                    res.send(data)
+                })
+            })
+        }
+    })
+})
+
+
+
+router.post("/rejectOrder", (req, res) => {
+    db.connect(url, (error, succes) => {
+        if (error) {
+            res.send(error)
+        }
+        else {
+            const dbo = succes.db("learn_mongodb")
+            const query = { selecterPersonID: req.body.selecterPersonID, selectedPerson: req.body.selectedPerson }
+            dbo.collection("orders").deleteOne(query, (err, done) => {
+                if (err) throw err;
+                else {
+                    succes.close(() => {
+                        res.send({
+                            Message: "Order rejected"
+                        })
+                        conscole.log(done)
+                    })
+                }
+            })
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+router.post("/acceptOrder", (req, res) => {
+    const order = req.body
+    db.connect(url, (error, succes) => {
+        if (error) {
+            res.send(error)
+        }
+        else {
+            const dbo = succes.db("learn_mongodb")
+            dbo.collection("AcceptedOrder").insert(order, (err, done) => {
+                if (err) throw err;
+                else {
+                    const query = { selecterPersonID: req.body.selecterPersonID, selectedPerson: req.body.selectedPerson }
+                    dbo.collection("orders").deleteOne(query, (err) => {
+                        if (err) throw err;
+                        else {
+                            succes.close(() => {
+                                console.log("Order Accepted")
+                                res.send({
+                                    Message: "Order Accepted"
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+})
 
 
 

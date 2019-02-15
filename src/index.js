@@ -8,7 +8,9 @@ import {
    SignComponent,
    Dashboard,
    ViewCategory,
-   AddServis
+   AddServis,
+   Hiring,
+   BookPerson
 } from "./Components/index"
 
 
@@ -88,6 +90,16 @@ const MainNavigator = createStackNavigator({
         // navigationOptions: {
         //     header: null
         // },
+    },
+    Hiring: {
+        screen: Hiring,
+        navigationOptions: {
+            header: null
+        },
+    },
+    BookPerson: {
+        screen: BookPerson,
+
     },
    
 }, {
