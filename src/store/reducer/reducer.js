@@ -4,9 +4,15 @@ const INITIAL_STATE = {
     cagoryList: [],
     serviceList: [],
     myOrders: [],
+    acceptedOrder: [],
+    finishedOrder: {},
     currentUser: {},
     currentCategory: {},
-    choseServises: {}
+    choseServises: {},
+    myRatting: [],
+    myAllRatting: [],
+    allWokers: []
+
 }
 
 
@@ -43,6 +49,31 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 myOrders: action.payload
+            })
+        case ActionTypes.ACCEPTED_ORDER:
+            return ({
+                ...state,
+                acceptedOrder: action.payload
+            })
+        case ActionTypes.FINISHED_ORDER:
+            return ({
+                ...state,
+                finishedOrder: action.payload
+            })
+        case ActionTypes.MY_RATTING:
+            return ({
+                ...state,
+                myRatting: action.payload
+            })
+        case ActionTypes.MY_RATTINGFOR_PROFILE:
+            return ({
+                ...state,
+                myAllRatting: action.payload
+            })
+        case ActionTypes.ALL_WORKERS:
+            return ({
+                ...state,
+                allWokers: action.payload
             })
         default:
             return state;

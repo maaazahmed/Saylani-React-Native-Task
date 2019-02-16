@@ -43,7 +43,7 @@ class AddServis extends Component {
             serviceProvider:currentUser
         }
 
-        fetch("http://192.168.0.102:8000/addService", {
+        fetch("http://192.168.100.21:8000/addService", {
             method: "post",
             body:JSON.stringify(obj),
             headers: {

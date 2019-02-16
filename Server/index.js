@@ -22,7 +22,8 @@ app.use("/nhoneNumberEdit", router);
 app.use("/addService", router);
 app.use("/getServieces", router);
 app.use("/rejectOrder", router);
-
+app.use("/saveRatting", router);
+// 
 
 
 app.listen(app.get("port"), (err, succ) => {

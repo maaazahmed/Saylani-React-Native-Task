@@ -25,7 +25,7 @@ class Google extends Component {
             const user = firebaseUserCredential.user._user;
 
             delete user.providerData
-            fetch(`http://192.168.0.102:8000/setUser`, {
+            fetch(`http://192.168.100.21:8000/setUser`, {
                 method: "post",
                 body: JSON.stringify(user),
                 headers: {

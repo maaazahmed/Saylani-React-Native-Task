@@ -64,4 +64,57 @@ export const myOrderAction = (data) => {
 }
 
 
+export const AcceptedOrderAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ACCEPTED_ORDER,
+            payload: data
+        })
+    }
+}
+
+
+export const finishedOrder = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.FINISHED_ORDER,
+            payload: data
+        })
+    }
+}
+
+
+
+export const myRatingAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MY_RATTING,
+            payload: data
+        })
+    }
+}
+
+
+export const myRatingActionActio = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MY_RATTINGFOR_PROFILE,
+            payload: data
+        })
+    }
+}
+
+
+
+export const AllWorkersAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ALL_WORKERS,
+            payload: data
+        })
+    }
+}
+
+
+
 

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, Image, ScrollView, Dimensions, TouchableOpacity, TextInput } from "react-native"
-import { Icon } from "native-base";
-import { connect } from "react-redux"
-
-
+import { View, Text, Image, ScrollView, Dimensions, TouchableOpacity, TextInput, Modal, FlatList } from "react-native"
+import { connect } from "react-redux";
+import { myRatingActionActio } from "../../../store/action/action"
+import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Right, } from 'native-base';
+import { AirbnbRating } from "react-native-ratings"
 
 
 const { width } = Dimensions.get("window")
@@ -14,8 +14,30 @@ class Profile extends Component {
             mailVal: "",
             phonNumerVale: "",
             emailEditFlage: false,
-            phonNumerFlege: false
+            phonNumerFlege: false,
+            modalVisible: false
         }
+    }
+
+
+    componentDidMount() {
+        const currentUser = this.props.currentUser.currentUser;
+
+        fetch("http://192.168.100.21:8000/getMyratting"
+            , {
+                method: "post",
+                body: JSON.stringify({ uid: currentUser.uid }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then((res) => {
+                this.props.myRatingActionActio(JSON.parse(res._bodyInit))
+                console.log(res._bodyInit)
+
+            }).catch((err) => {
+                console.log(err, ",,,")
+            })
     }
 
 
@@ -23,8 +45,7 @@ class Profile extends Component {
 
     emailEdit() {
         const currentUser = this.props.currentUser.currentUser;
-        console.log(currentUser.uid)
-     
+
         const obj = {
             email: this.state.mailVal,
             uid: currentUser.uid
@@ -59,7 +80,7 @@ class Profile extends Component {
             phoneNumber: this.state.phonNumerVale,
             uid: currentUser.uid
         }
-        fetch("http://192.168.100.153:8000/nhoneNumberEdit"
+        fetch("http://192.168.100.21:8000/nhoneNumberEdit"
             , {
                 method: "post",
                 body: JSON.stringify(obj),
@@ -79,8 +100,9 @@ class Profile extends Component {
 
 
     render() {
-        const currentUser = this.props.currentUser.currentUser
-        console.log(currentUser, "currentUsercurrentUser")
+        const currentUser = this.props.currentUser.currentUser;
+        const getAllRatting = this.props.getAllRatting.myAllRatting;
+        console.log(getAllRatting, "------------------0")
         return (
             <View style={{ flex: 1, }} >
                 <View style={{ backgroundColor: "#512da7", flex: 1 }} />
@@ -91,21 +113,16 @@ class Profile extends Component {
                             <View style={{ alignItems: "center", flex: 3, justifyContent: "center" }} >
                                 <Image style={{ height: 115, width: 115, borderRadius: width }} resizeMode="stretch" source={{ uri: currentUser.profilePic }} />
                             </View>
-                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }} >
-                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", flex: 1, }} >
-                                    <View style={{
-                                        width: "50%", borderRightColor: "#9c9c9c", borderRightWidth: 1,
-                                        alignItems: "flex-end", paddingRight: 15
-                                    }} ><Text style={{ fontSize: 19, fontWeight: "400", color: "#512da7" }} >{currentUser.username}</Text></View>
-                                    <View style={{ width: "50%", paddingLeft: 15 }}><Text style={{ fontSize: 15 }}>Plumber</Text></View>
-                                </View>
+                            <View style={{ alignItems: "center" }} >
+                                <View style={{ justifyContent: "center", alignItems: "center" }} >
+                                    <Text style={{ fontSize: 19, fontWeight: "400", color: "#512da7" }} >{currentUser.username}</Text></View>
                             </View>
-                            <View style={{ flex: 1, width: "100%", justifyContent: "center", alignItems: "center", flexDirection: "row" }} >
-                                <Icon name="star" style={{ color: "#fff", fontSize: 25, }} />
-                                <Icon name="star-outline" style={{ color: "#512da7", fontSize: 25, padding: 5 }} />
-                                <Icon name="star-outline" style={{ color: "#512da7", fontSize: 25, padding: 5 }} />
-                                <Icon name="star-outline" style={{ color: "#512da7", fontSize: 25, padding: 5 }} />
-                                <Icon name="star-outline" style={{ color: "#512da7", fontSize: 25, padding: 5 }} />
+                            <View style={{ flex: 1, width: "100%", alignItems: "center" }}>
+                                <View style={{ marginTop: 20, justifyContent: "center", alignItems: "center" }} >
+                                    <TouchableOpacity onPress={() => this.setState({ modalVisible: true })} style={{ height: 40, width: 100, backgroundColor: "#512da7", justifyContent: "center", alignItems: "center" }} >
+                                        <Text style={{ color: "#fff", fontSize: 17 }}>Views</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -114,7 +131,7 @@ class Profile extends Component {
                             {(this.state.emailEditFlage) ?
                                 <View style={{ flexDirection: "row", height: 50, width: "90%", marginTop: 20 }} >
                                     <TextInput onChangeText={(mailVal) => this.setState({ mailVal })}
-                                     style={{ flex: 1, borderColor: "#512da7", borderWidth: 1 }} />
+                                        style={{ flex: 1, borderColor: "#512da7", borderWidth: 1 }} />
                                     <TouchableOpacity onPress={this.emailEdit.bind(this)}
                                         style={{ width: 60, height: "100%", justifyContent: "center", alignItems: "center", borderRadius: 3 }} >
                                         <Icon name="done-all" style={{ color: "#512da7", fontSize: 25, }} />
@@ -168,8 +185,76 @@ class Profile extends Component {
                                 <Text style={{ fontSize: 17, color: "#512da7" }}>Location</Text>
                             </View>
                         </View>
+
+
+
                     </View>
+
                 </View>
+                <Modal
+                    animationType={"fade"}
+                    onRequestClose={() => { }}
+                    visible={this.state.modalVisible} >
+                    <View style={{ flex: 1, backgroundColor: "#0000008f", justifyContent: "center", alignItems: "center" }} >
+                        <View style={{ height: "90%", width: "90%", backgroundColor: "#f3f3f3", }} >
+                            <FlatList
+                                data={getAllRatting}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View style={{ marginTop: 3 }}>
+                                            {/* <CardItem header>
+                                                <Text style={{ color: "#512da7" }}>{"Maaz Ahmed"}</Text>
+                                            </CardItem>
+                                            <CardItem>
+                                                <Left>
+                                                    <Body transparent textStyle={{ color: '#87838B' }}>
+                                                        <Text style={{ fontSize: 16, color: "#512da7" }}>{item.commentVal}</Text>
+                                                    </Body>
+                                                </Left>
+                                            </CardItem>
+                                            <CardItem style={{}}>
+                                                <Body transparent textStyle={{ color: '#87838B' }}>
+                                                    <AirbnbRating
+                                                        type='star'
+                                                        ratingCount={1}
+                                                        defaultRating={item.rating}
+                                                        showRating={false}
+                                                        size={17}
+                                                    />
+                                                </Body>
+                                            </CardItem> */}
+                                            <Card>
+                                                <CardItem header>
+                                                    <Text>Maaz Khan</Text>
+                                                </CardItem>
+                                                <CardItem>
+                                                    <Body>
+                                                        <Text>
+                                                            {item.commentVal}
+                                                        </Text>
+                                                    </Body>
+                                                </CardItem>
+                                                <CardItem footer>
+                                                    <AirbnbRating
+                                                        type='star'
+                                                        ratingCount={1}
+                                                        defaultRating={item.rating}
+                                                        showRating={false}
+                                                        size={17}
+                                                    />
+                                                </CardItem>
+                                            </Card>
+                                        </View>
+                                    )
+                                }} keyExtractor={(item) => item._id} />
+                            <View style={{ marginTop: 20, justifyContent: "center", alignItems: "center" }} >
+                                <TouchableOpacity activeOpacity={.6} onPress={() => this.setState({ modalVisible: false })} style={{ height: 40, width: "100%", backgroundColor: "#512da7", justifyContent: "center", alignItems: "center" }} >
+                                    <Text style={{ color: "#fff", fontSize: 17 }}>Close</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
 
         )
@@ -181,13 +266,14 @@ class Profile extends Component {
 const mapStateToProp = (state) => {
     return ({
         currentUser: state.root,
+        getAllRatting: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        // currentUserAction: (data) => {
-        //     dispatch(currentUserAction(data))
-        // },
+        myRatingActionActio: (data) => {
+            dispatch(myRatingActionActio(data))
+        },
     };
 };
 

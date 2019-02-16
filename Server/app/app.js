@@ -5,9 +5,6 @@ const db = mongodb.MongoClient;
 const url = "mongodb://maazahmed:maazahmed1@ds163764.mlab.com:63764/learn_mongodb"
 
 
-
-
-
 router.post("/setUser", (req, res) => {
     const user = {
         phoneNumber: req.body.phoneNumber,
@@ -280,14 +277,6 @@ router.post("/rejectOrder", (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
 router.post("/acceptOrder", (req, res) => {
     const order = req.body
     db.connect(url, (error, succes) => {
@@ -318,6 +307,120 @@ router.post("/acceptOrder", (req, res) => {
 })
 
 
+
+// ========================>>>>>>>>>>>>>>>>>>>>>>>> Under Working
+router.post("/getAcceptedOrder", (req, res) => {
+    console.log(req.body)
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("AcceptedOrder").find({ selectedPerson: req.body.uid }).toArray((err2, data) => {
+                if (err2) throw err2;
+                suc.close(() => {
+                    res.send(data)
+                })
+            })
+        }
+    })
+})
+
+
+// 
+
+router.post("/saveRatting", (req, res) => {
+    console.log(req.body, "-----------")
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("Comment").insert(req.body, (fail, save) => {
+                if (fail) {
+                    res.send(err)
+                }
+                else {
+                    res.send({
+                        Message: "Commint send"
+                    })
+                }
+            })
+        }
+    })
+})
+
+
+
+
+router.post("/getRatting", (req, res) => {
+    console.log(req.body.uid, "-----------")
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("Comment").find({ selecterPersonID: req.body.uid }).toArray((fail, data) => {
+                if (fail) {
+                    res.send(fail)
+                }
+                else {
+                    res.send(data)
+                }
+            })
+        }
+    })
+})
+
+
+
+router.post("/getMyratting", (req, res) => {
+    console.log(req.body.uid, "-----------")
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("Comment").find({ selecterPersonID: req.body.uid }).toArray((fail, data) => {
+                if (fail) {
+                    res.send(fail)
+                }
+                else {
+                    res.send(data)
+                }
+            })
+        }
+    })
+})
+
+
+
+
+
+
+router.get("/allWorkers", (req, res) => {
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("Services").find({}).toArray((fail, data) => {
+                if (fail) {
+                    res.send(fail)
+                }
+                else {
+                    console.log(data,"data")
+                    res.send(data)
+                }
+            })
+        }
+    })
+})
 
 
 

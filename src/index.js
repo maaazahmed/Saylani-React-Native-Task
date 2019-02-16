@@ -10,7 +10,9 @@ import {
    ViewCategory,
    AddServis,
    Hiring,
-   BookPerson
+   BookPerson,
+   HeiredReview,
+   ChatComponent
 } from "./Components/index"
 
 
@@ -101,9 +103,17 @@ const MainNavigator = createStackNavigator({
         screen: BookPerson,
 
     },
+    HeiredReview: {
+        screen: HeiredReview,
+
+    },
+    ChatComponent: {
+        screen: ChatComponent,
+
+    },
    
 }, {
-        initialRouteName: "SignComponent",
+        initialRouteName: "ChatComponent",
         transitionConfig,
     })
 

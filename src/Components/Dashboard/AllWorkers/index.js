@@ -10,44 +10,42 @@ import {
 } from 'react-native';
 import { Icon } from "native-base"
 import { connect } from "react-redux"
-import {  servicesACtion, choseServisesAction } from "../../../store/action/action"
+import { AllWorkersAction, choseServisesAction } from "../../../store/action/action"
 
 
 
 
 
 const { height } = Dimensions.get("window")
-class ViewCategory extends Component {
+class AllWorkers extends Component {
+
     componentWillMount() {
         const currentCategory = this.props.currentCategory.currentCategory;
         const obj = {
             id: currentCategory._id
         }
-        fetch(`http://192.168.100.21:8000/getServieces`, {
-            method: "post",
-            body: JSON.stringify(obj),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
+
+
+        fetch(`http://192.168.100.21:8000/allWorkers`, {
+            method: "get",
         }).then((res) => {
             console.log(JSON.parse(res._bodyInit), "current")
-            this.props.servicesACtion(JSON.parse(res._bodyInit))
+            this.props.AllWorkersAction(JSON.parse(res._bodyInit))
         }).catch((error) => {
             console.log("Error:", error)
         })
     }
 
     choseServises(data) {
-        console.log(data,"DATA")
-         this.props.choseServisesAction(data)
-         this.props.navigation.navigate("Hiring")
+        console.log(data, "DATA")
+        this.props.choseServisesAction(data)
+        this.props.navigation.navigate("Hiring")
     }
 
 
     render() {
-        let serviceList = this.props.serviceList.serviceList;
-        console.log(serviceList, "serviceList")
+        let allWokers = this.props.allWokers.allWokers;
+        console.log(allWokers, "servic888888888888888888888888eList")
         return (
             <View style={{ flex: 1, backgroundColor: "#f2f2f2" }} >
                 <View style={{ flex: 1, zIndex: 0, backgroundColor: "#512da7" }}>
@@ -65,7 +63,6 @@ class ViewCategory extends Component {
                         <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 15 }} >
                             <Text style={{ fontSize: 19, color: "#fff", fontWeight: "300" }} > Categories</Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate("AddServis")} style={{}} >
-                                {/* <ion-icon name="contact"></ion-icon> <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300" }} > Add Service</Text> */}
                                 <Icon name="add" style={{ color: "#fff", fontSize: 25, }} />
                             </TouchableOpacity>
                         </View>
@@ -83,7 +80,7 @@ class ViewCategory extends Component {
 
                     <View style={{ flex: 1, marginTop: 10 }} >
                         <FlatList
-                            data={serviceList}
+                            data={allWokers}
                             renderItem={({ item, index }) => {
                                 return (
                                     <View key={index} style={{
@@ -104,16 +101,28 @@ class ViewCategory extends Component {
                                             </View>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1, alignItems: "center" }} >
                                                 <TouchableOpacity
-                                                    onPress={this.choseServises.bind(this,item)}
+                                                    onPress={this.choseServises.bind(this, item)}
                                                     activeOpacity={0.5} style={{
                                                         backgroundColor: "#6144b3", borderRadius: 4,
-                                                        padding: 4, width: 100, flexDirection: "row", justifyContent: "space-around",
+                                                        padding: 4, width: 70, flexDirection: "row", justifyContent: "space-around",
                                                         alignItems: "center",
                                                         margin: 10
                                                     }} >
                                                     <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Hire me</Text>
-                                                    {/* <Icon name="eye" style={{ color: "#fff", fontSize: 17, }} /> */}
                                                 </TouchableOpacity>
+
+                                                <TouchableOpacity
+                                                    // onPress={this.choseServises.bind(this, item)}
+                                                    activeOpacity={0.5} style={{
+                                                        backgroundColor: "#fff", borderRadius: 4,
+                                                        padding: 4, width: 50, flexDirection: "row", justifyContent: "space-around",
+                                                        alignItems: "center",
+                                                        margin: 10
+                                                    }} >
+                                                    {/* <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Message</Text> */}
+                                                    <Icon name="chatboxes" style={{ color: "#6144b3", fontSize: 23, }} />
+                                                </TouchableOpacity>
+                                                
                                             </View>
                                         </View>
                                     </View>
@@ -134,7 +143,8 @@ class ViewCategory extends Component {
 const mapStateToProp = (state) => {
     return ({
         serviceList: state.root,
-        currentCategory: state.root
+        currentCategory: state.root,
+        allWokers: state.root
     });
 };
 const mapDispatchToProp = (dispatch) => {
@@ -142,16 +152,11 @@ const mapDispatchToProp = (dispatch) => {
         choseServisesAction: (data) => {
             dispatch(choseServisesAction(data))
         },
-        servicesACtion: (data) => {
-            dispatch(servicesACtion(data))
+        AllWorkersAction: (data) => {
+            dispatch(AllWorkersAction(data))
         },
-        
+
     };
 };
 
-export default connect(mapStateToProp, mapDispatchToProp)(ViewCategory
-
-
-
-
-)
+export default connect(mapStateToProp, mapDispatchToProp)(AllWorkers)

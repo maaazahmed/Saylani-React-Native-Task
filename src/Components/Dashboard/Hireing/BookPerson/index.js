@@ -38,7 +38,7 @@ class BookPerson extends Component {
             selectedPerson: choseServises.serviceProvider.uid
         }
         // console.log(obj)
-        fetch("http://192.168.0.102:8000/myOrders", {
+        fetch("http://192.168.100.21:8000/myOrders", {
             method: "post",
             body:JSON.stringify(obj),
             headers: {
