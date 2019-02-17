@@ -29,7 +29,7 @@ class AcceptOrders extends Component {
 
     finishOrder(data) {
         console.log(data)
-        console.log( this.props.navigation.navigate)
+        // console.log( this.props.navigation.navigate)
         this.props.finishedOrder(data)
         this.props.navigation.navigate("HeiredReview")
         // fetch("http://192.168.100.21:8000/rejectOrder", {
@@ -55,6 +55,11 @@ class AcceptOrders extends Component {
         // })
     }
 
+    chating(data){
+        this.props.finishedOrder(data)
+        this.props.navigation.navigate("ChatComponent")
+    }
+
 
 
     render() {
@@ -66,7 +71,6 @@ class AcceptOrders extends Component {
                     data={acceptedOrder}
                     renderItem={({ item, index }) => {
                         return (
-
                             <View style={{ borderBottomColor: "gray", borderBottomWidth: 1 }}>
                                 <CardItem style={{}} >
                                     <Left>
@@ -103,18 +107,32 @@ class AcceptOrders extends Component {
                                 <CardItem>
                                     <Left>
                                         <Body transparent textStyle={{ color: '#87838B' }}>
-                                            <View style={{  justifyContent: "flex-start", }} >
+                                            <View style={{  flexDirection:"row", justifyContent:"space-between", width:"40%" }} >
                                                 <TouchableOpacity
                                                     onPress={this.finishOrder.bind(this, item)}
                                                     style={{
-                                                        width: 100,
+                                                        width: 80,
                                                         borderRadiud: 3,
-                                                        height: 35,
+                                                        height: 30,
                                                         backgroundColor: "#512da7",
                                                         justifyContent: "center",
                                                         alignItems: "center"
                                                     }} >
                                                     <Text style={{ color: "#fff", fontSize: 15 }} >Fnish</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    onPress={this.chating.bind(this, item)}
+                                                    style={{
+                                                        width: 80,
+                                                        borderRadiud: 3,
+                                                        height: 30,
+                                                        backgroundColor: "#fff",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        borderColor:"#512da7",
+                                                        borderWidth:1
+                                                    }} >
+                                                    <Text style={{ color: "#512da7", fontSize: 15 }} >Chat</Text>
                                                 </TouchableOpacity>
 
                                             </View>

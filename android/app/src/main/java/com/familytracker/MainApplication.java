@@ -17,6 +17,7 @@ import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Add this line
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage; // <-- Add this line
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,9 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new RNGestureHandlerPackage(),
             new RNFirebaseAuthPackage(), // <-- Add this line
-            new FBSDKPackage(mCallbackManager)
+            new FBSDKPackage(mCallbackManager),
+            new RNFirebaseDatabasePackage() // <-- Add this line
+
 
       );
     }

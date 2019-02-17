@@ -113,7 +113,7 @@ const MainNavigator = createStackNavigator({
     },
    
 }, {
-        initialRouteName: "ChatComponent",
+        initialRouteName: "SignComponent",
         transitionConfig,
     })
 

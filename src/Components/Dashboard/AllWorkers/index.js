@@ -44,6 +44,7 @@ class AllWorkers extends Component {
 
 
     render() {
+        const currentUser =  this.props.currentUser.currentUser
         let allWokers = this.props.allWokers.allWokers;
         console.log(allWokers, "servic888888888888888888888888eList")
         return (
@@ -82,7 +83,8 @@ class AllWorkers extends Component {
                         <FlatList
                             data={allWokers}
                             renderItem={({ item, index }) => {
-                                return (
+                               
+                                return  (item.serviceProvider.uid !== currentUser.uid)? (
                                     <View key={index} style={{
                                         backgroundColor: "#fff", padding: 5, borderRadius: 2,
                                         marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, flexDirection: "row"
@@ -111,7 +113,7 @@ class AllWorkers extends Component {
                                                     <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Hire me</Text>
                                                 </TouchableOpacity>
 
-                                                <TouchableOpacity
+                                                {/* <TouchableOpacity
                                                     // onPress={this.choseServises.bind(this, item)}
                                                     activeOpacity={0.5} style={{
                                                         backgroundColor: "#fff", borderRadius: 4,
@@ -119,14 +121,13 @@ class AllWorkers extends Component {
                                                         alignItems: "center",
                                                         margin: 10
                                                     }} >
-                                                    {/* <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Message</Text> */}
                                                     <Icon name="chatboxes" style={{ color: "#6144b3", fontSize: 23, }} />
-                                                </TouchableOpacity>
+                                                </TouchableOpacity> */}
                                                 
                                             </View>
                                         </View>
                                     </View>
-                                )
+                                ):null
                             }}
                             keyExtractor={(item) => item._id}
                         />
@@ -144,7 +145,8 @@ const mapStateToProp = (state) => {
     return ({
         serviceList: state.root,
         currentCategory: state.root,
-        allWokers: state.root
+        allWokers: state.root,
+        currentUser: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
