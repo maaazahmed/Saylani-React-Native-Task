@@ -12,7 +12,8 @@ const INITIAL_STATE = {
     myRatting: [],
     myAllRatting: [],
     allWokers: [],
-    messageList: []
+    messageList: [],
+    isLoader: false
 
 }
 
@@ -80,6 +81,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 messageList: action.payload
+            })
+        case ActionTypes.IS_LOADER:
+            return ({
+                ...state,
+                isLoader: action.payload
             })
         default:
             return state;

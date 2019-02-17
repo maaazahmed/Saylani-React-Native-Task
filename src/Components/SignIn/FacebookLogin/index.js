@@ -4,17 +4,21 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase'
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
-import{connect} from "react-redux"
-import { currentUserAction } from "../../../store/action/action"
+import { connect } from "react-redux"
+import { currentUserAction, isLoaderAction } from "../../../store/action/action"
 
 
- class Facebook extends Component {
+class Facebook extends Component {
+
   async facebookLogin() {
+    this.props.isLoaderAction(true)
     try {
       const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
       if (result.isCancelled) {
+        this.props.isLoaderAction(false)
         // handle this however suites the flow of your app
         // console.log(result.isCancelled)
+        //  this.props.isLoaderAction(false)
         // throw new Error('User cancelled request');
       }
 
@@ -24,6 +28,7 @@ import { currentUserAction } from "../../../store/action/action"
       const data = await AccessToken.getCurrentAccessToken();
 
       if (!data) {
+        this.props.isLoaderAction(false)
         // handle this however suites the flow of your app
         // throw new Error('Something went wrong obtaining the users access token');
         alert("Something went wrong obtaining the users access token")
@@ -55,10 +60,13 @@ import { currentUserAction } from "../../../store/action/action"
         if (res.status == 200) {
           console.log(res, "current")
           this.props.currentUserAction(JSON.parse(res._bodyInit))
+          this.props.isLoaderAction(false)
           this.props.navigation.navigate("Dashboard")
         }
       }).catch((error) => {
         console.log("Error:", error)
+        this.props.isLoaderAction(false)
+
       })
       /********************************************** */
       /********************************************** */
@@ -145,14 +153,17 @@ const styles = StyleSheet.create({
 
 const mapStateToProp = (state) => {
   return ({
-      currentUser: state.root,
+    currentUser: state.root,
   });
 };
 const mapDispatchToProp = (dispatch) => {
   return {
-      currentUserAction: (data) => {
-          dispatch(currentUserAction(data))
-      },
+    currentUserAction: (data) => {
+      dispatch(currentUserAction(data))
+    },
+    isLoaderAction: (data) => {
+      dispatch(isLoaderAction(data))
+    },
   };
 };
 

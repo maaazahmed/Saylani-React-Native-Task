@@ -13,6 +13,10 @@ import {
 import MapView, { Marker, AnimatedRegion, Polyline } from "react-native-maps";
 import haversine from "haversine";
 import firebase from "react-native-firebase";
+import { connect } from "react-redux"
+
+
+
 
 
 
@@ -23,6 +27,12 @@ const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = 0.009;
 
 class Location extends React.Component {
+    static navigationOptions = {
+        title: 'Add Service',
+        headerStyle: { backgroundColor: '#512da7' },
+        headerTitleStyle: { color: '#fff' },
+        headerTintColor: '#ffffff',
+    }
     constructor(props) {
         super(props);
 
@@ -37,6 +47,7 @@ class Location extends React.Component {
                 longitude: LONGITUDE
             })
         };
+
     }
 
     componentWillMount() {
@@ -72,37 +83,58 @@ class Location extends React.Component {
                 coordinate.timing(newCoordinate).start();
             }
 
-            this.setState({
-                latitude,
-                longitude,
-                routeCoordinates: routeCoordinates.concat([newCoordinate]),
-                distanceTravelled:
-                distanceTravelled + this.calcDistance(newCoordinate),
-                prevLatLng: newCoordinate
-            });
-            
+            // this.setState({
+            //     latitude,
+            //     longitude,
+            //     routeCoordinates: routeCoordinates.concat([newCoordinate]),
+            //     distanceTravelled:
+            //         distanceTravelled + this.calcDistance(newCoordinate),
+            //     prevLatLng: newCoordinate
+            // });
             const obj = {
                 latitude,
                 longitude,
                 routeCoordinates: routeCoordinates.concat([newCoordinate]),
                 distanceTravelled:
-                distanceTravelled + this.calcDistance(newCoordinate),
+                    distanceTravelled + this.calcDistance(newCoordinate),
                 prevLatLng: newCoordinate
             }
 
-            console.log(obj,"-------------------")
+            const currentUser = this.props.currentUser.currentUser
+            database.child(`Location/${currentUser.uid}/`).set(obj)
+            const selectedPersonID = this.props.worker.finishedOrder.selecterPerson.uid
 
 
 
+            database.child(`Location/${selectedPersonID}`).on("value", (snap) => {
+                console.log(snap.val(), "snap")
+                const place = snap.val()
+                this.setState({
+                    latitude: place.latitude,
+                    longitude: place.longitude,
+                    routeCoordinates: place.routeCoordinates,
+                    distanceTravelled: place.distanceTravelled,
+                    prevLatLng: place.prevLatLng,
+                    coordinate: new AnimatedRegion({
+                        latitude:  place.latitude,
+                        longitude:  place.longitude
+                    })
+                })
+            })
 
+
+
+            console.log(selectedPersonID)
         }, (error) => console.log(error),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         );
     }
 
     componentWillUnmount() {
-        // navigator.geolocation.clearWatch(this.watchID);
+        navigator.geolocation.clearWatch(this.watchID);
     }
+
+
 
     calcDistance = newLatLng => {
         const { prevLatLng } = this.state;
@@ -118,7 +150,6 @@ class Location extends React.Component {
         }
 
         return obj
-
     }
 
     render() {
@@ -136,7 +167,14 @@ class Location extends React.Component {
                         ref={marker => {
                             this.marker = marker;
                         }}
-                        coordinate={this.state.coordinate} />
+                        // coordinate={{
+                        //     latitude: this.state.latitude,
+                        //     longitude: this.state.longitude,
+                        // }}
+                        coordinate={
+                            this.state.coordinate
+                        } 
+                        />
                 </MapView>
                 <View style={styles.buttonContainer}>
                     {/* <TouchableOpacity style={[styles.bubble, styles.button]}>
@@ -164,7 +202,8 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(255,255,255,0.7)",
         paddingHorizontal: 18,
         paddingVertical: 12,
-        borderRadius: 20
+        borderRadius: 20,
+        
     },
     latlng: {
         width: 200,
@@ -183,4 +222,19 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Location;
+
+const mapStateToProp = (state) => {
+    return ({
+        currentUser: state.root,
+        worker: state.root,
+    });
+};
+const mapDispatchToProp = (dispatch) => {
+    return {
+        // myOrderAction: (data) => {
+        //     dispatch(myOrderAction(data))
+        // },
+    };
+};
+
+export default connect(mapStateToProp, mapDispatchToProp)(Location)

@@ -4,11 +4,12 @@ import firebase from 'react-native-firebase'
 import { GoogleSignin } from 'react-native-google-signin';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
-import { currentUserAction } from "../../../store/action/action"
+import { currentUserAction, isLoaderAction } from "../../../store/action/action"
 import { connect } from "react-redux"
 
 class Google extends Component {
     async  googleLogin() {
+        this.props.isLoaderAction(true)
         try {
             console.log("running...")
             // add any configuration settings here:
@@ -37,12 +38,15 @@ class Google extends Component {
                 if (res.status == 200) {
                     // console.log(res, "current")
                     this.props.currentUserAction(JSON.parse(res._bodyInit))
+                    this.props.isLoaderAction(false)
                     this.props.navigation.navigate("Dashboard")
                 }
             }).catch((error) => {
                 console.log("Error:", error)
+                this.props.isLoaderAction(false)
             })
         } catch (e) {
+            this.props.isLoaderAction(false)
             console.error(e);
         }
     }
@@ -124,6 +128,9 @@ const mapDispatchToProp = (dispatch) => {
     return {
         currentUserAction: (data) => {
             dispatch(currentUserAction(data))
+        },
+        isLoaderAction: (data) => {
+            dispatch(isLoaderAction(data))
         },
     };
 };

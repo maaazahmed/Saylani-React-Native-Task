@@ -119,7 +119,7 @@ const MainNavigator = createStackNavigator({
 
    
 }, {
-        initialRouteName: "Location",
+        initialRouteName: "SignComponent",
         transitionConfig,
     })
 

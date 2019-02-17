@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from "react-native"
-import { CardItem, Thumbnail, Left, Body, } from 'native-base';
+import { CardItem, Thumbnail, Left, Body, Icon, } from 'native-base';
 import { connect } from "react-redux"
 import { AcceptedOrderAction, finishedOrder } from "../../../../store/action/action"
 
@@ -55,9 +55,15 @@ class AcceptOrders extends Component {
         // })
     }
 
-    chating(data){
+    chating(data) {
         this.props.finishedOrder(data)
         this.props.navigation.navigate("ChatComponent")
+    }
+
+
+    seeLocatio(data) {
+        this.props.finishedOrder(data)
+        this.props.navigation.navigate("Location")
     }
 
 
@@ -107,32 +113,51 @@ class AcceptOrders extends Component {
                                 <CardItem>
                                     <Left>
                                         <Body transparent textStyle={{ color: '#87838B' }}>
-                                            <View style={{  flexDirection:"row", justifyContent:"space-between", width:"40%" }} >
+                                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }} >
+                                                <View style={{ flexDirection: "row", width: "40%", justifyContent: "space-between" }} >
+                                                    <TouchableOpacity
+                                                        onPress={this.finishOrder.bind(this, item)}
+                                                        style={{
+                                                            width: 80,
+                                                            borderRadiud: 3,
+                                                            height: 30,
+                                                            backgroundColor: "#512da7",
+                                                            justifyContent: "center",
+                                                            alignItems: "center"
+                                                        }} >
+                                                        <Text style={{ color: "#fff", fontSize: 15 }} >Fnish</Text>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity
+                                                        onPress={this.chating.bind(this, item)}
+                                                        style={{
+                                                            width: 80,
+                                                            borderRadiud: 3,
+                                                            height: 30,
+                                                            backgroundColor: "#512da7",
+                                                            justifyContent: "center",
+                                                            alignItems: "center",
+                                                            // borderColor:"#512da7",
+                                                            // borderWidth:1
+                                                        }} >
+                                                        <Text style={{ color: "#fff", fontSize: 15 }} >Chat</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+
+
+
                                                 <TouchableOpacity
-                                                    onPress={this.finishOrder.bind(this, item)}
+                                                    onPress={this.seeLocatio.bind(this, item)}
                                                     style={{
-                                                        width: 80,
-                                                        borderRadiud: 3,
-                                                        height: 30,
-                                                        backgroundColor: "#512da7",
-                                                        justifyContent: "center",
-                                                        alignItems: "center"
-                                                    }} >
-                                                    <Text style={{ color: "#fff", fontSize: 15 }} >Fnish</Text>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity
-                                                    onPress={this.chating.bind(this, item)}
-                                                    style={{
-                                                        width: 80,
+                                                        width: 50,
                                                         borderRadiud: 3,
                                                         height: 30,
                                                         backgroundColor: "#fff",
                                                         justifyContent: "center",
                                                         alignItems: "center",
-                                                        borderColor:"#512da7",
-                                                        borderWidth:1
+                                                        // borderColor:"#512da7",
+                                                        // borderWidth:1
                                                     }} >
-                                                    <Text style={{ color: "#512da7", fontSize: 15 }} >Chat</Text>
+                                                    <Icon name={"pin"} style={{ fontSize: 23, color: "#512da7" }} />
                                                 </TouchableOpacity>
 
                                             </View>
@@ -164,7 +189,7 @@ const mapDispatchToProp = (dispatch) => {
         finishedOrder: (data) => {
             dispatch(finishedOrder(data))
         },
-        
+
     };
 };
 

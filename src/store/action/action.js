@@ -126,5 +126,15 @@ export const messageListAction = (data) => {
 }
 
 
+export const isLoaderAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.IS_LOADER,
+            payload: data
+        })
+    }
+}
+
+
 
 
