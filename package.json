@@ -19,6 +19,7 @@
     "react-native-google-signin": "^1.1.0",
     "react-native-maps": "^0.23.0",
     "react-native-ratings": "^6.3.0",
+    "react-native-search-filter": "^0.1.4",
     "react-native-tabbar-bottom": "^1.0.4",
     "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.0.9",
