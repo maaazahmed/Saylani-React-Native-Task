@@ -11,7 +11,8 @@ const INITIAL_STATE = {
     choseServises: {},
     myRatting: [],
     myAllRatting: [],
-    allWokers: []
+    allWokers: [],
+    messageList: []
 
 }
 
@@ -74,6 +75,11 @@ export default (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 allWokers: action.payload
+            })
+        case ActionTypes.MESSAGE_LIST:
+            return ({
+                ...state,
+                messageList: action.payload
             })
         default:
             return state;

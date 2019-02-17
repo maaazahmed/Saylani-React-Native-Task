@@ -1,9 +1,19 @@
 import React, { Component } from "react"
-import { View, TextInput, TouchableOpacity } from "react-native";
+import { View, TextInput, TouchableOpacity, FlatList, Text } from "react-native";
 import { Icon } from "native-base"
 import { connect } from "react-redux"
+import firebase from "react-native-firebase"
+import { messageListAction } from "../../../store/action/action"
 
 
+
+
+
+
+
+
+
+const database = firebase.database().ref("/")
 class ChatComponent extends Component {
     static navigationOptions = {
         title: 'Add Service',
@@ -19,31 +29,96 @@ class ChatComponent extends Component {
         }
     }
 
+    componentDidMount() {
+        const { messageVal } = this.state
+        const currentUser = this.props.currentUser.currentUser;
+        const chater = this.props.chater.finishedOrder;
+        const obj = {
+            senderId: currentUser.uid,
+            reseverId: chater.selecterPerson.uid,
+            messageText: messageVal
+        }
+        let arr = []
+        database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
+            var messages = snap.val()
+            for (key in messages) {
+                arr.push({ ...messages[key], key })
+            }
+            this.props.messageListAction(arr)
+        })
+    }
+
+
+
+
     onMessageSend() {
         const { messageVal } = this.state
         const currentUser = this.props.currentUser.currentUser;
-        // console.log(currentUser.uid)
-        // console.log(chater.selecterPerson.uid)
         const chater = this.props.chater.finishedOrder;
 
         if (messageVal !== "") {
             const obj = {
-                senderID:currentUser.uid,
-                resverId:chater.selecterPerson.uid,
-                messageText:messageVal
+                senderId: currentUser.uid,
+                reseverId: chater.selecterPerson.uid,
+                messageText: messageVal
             }
-            console.log(obj)
-
+            database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
+            database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
+            this.setState({
+                messageValue: ""
+            })
         }
 
     }
 
 
     render() {
+        const messageList = this.props.messageList.messageList
+        const currentUser = this.props.currentUser.currentUser;
+
+        console.log(messageList)
         return (
             <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
 
-                <View style={{ flex: 1, backgroundColor: "red", }} >
+                <View style={{ flex: 1, backgroundColor: "#f3f3f3", }} >
+                    <FlatList data={messageList} renderItem={({ item, index }) => {
+                        return (
+
+                            <View
+                                style={(item.senderId === currentUser.uid) ?
+                                    {
+                                        color: "#fff",
+                                        backgroundColor: "#a10000",
+                                        fontSize: 20,
+                                        marginTop: 10,
+                                        width: 200,
+                                        borderRadius: 25,
+                                        margin: 15,
+                                        padding: 13,
+                                        alignSelf: "flex-end",
+
+                                    }
+                                    :
+                                    {
+                                        color: "#fff",
+                                        backgroundColor: "#f2f2f2",
+                                        fontSize: 20,
+                                        marginTop: 10,
+                                        width: 200,
+                                        borderRadius: 25,
+                                        margin: 15,
+                                        padding: 13,
+                                        alignSelf: "flex-start"
+
+                                    }} >
+                                <Text
+                                    style={(item.senderId === currentUser) ?
+                                        { color: "#fff", fontSize: 20, } :
+                                        { color: "#a10000", fontSize: 20 }}
+                                >{item. messageText}</Text>
+                            </View>
+                        )
+                    }} />
                 </View>
 
                 <View style={{ height: 55, justifyContent: "center", flexDirection: "row", alignItems: "center" }} >
@@ -70,7 +145,8 @@ class ChatComponent extends Component {
 const mapStateToProp = (state) => {
     return ({
         currentUser: state.root,
-        chater: state.root
+        chater: state.root,
+        messageList: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
@@ -78,9 +154,9 @@ const mapDispatchToProp = (dispatch) => {
         // AcceptedOrderAction: (data) => {
         //     dispatch(AcceptedOrderAction(data))
         // },
-        // finishedOrder: (data) => {
-        //     dispatch(finishedOrder(data))
-        // },
+        messageListAction: (data) => {
+            dispatch(messageListAction(data))
+        },
 
     };
 };

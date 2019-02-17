@@ -116,5 +116,15 @@ export const AllWorkersAction = (data) => {
 }
 
 
+export const messageListAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.MESSAGE_LIST,
+            payload: data
+        })
+    }
+}
+
+
 
 
