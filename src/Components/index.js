@@ -6,6 +6,7 @@ import Hiring from "./Dashboard/Hireing/index"
 import BookPerson from "./Dashboard/Hireing/BookPerson/index"
 import HeiredReview from "./Dashboard/HierdReview/index"
 import ChatComponent from "./Dashboard/Chating/index"
+import Location from "./Dashboard/MapView/index"
 export {
     SignComponent,
     Dashboard,
@@ -14,5 +15,6 @@ export {
     Hiring,
     BookPerson,
     HeiredReview,
-    ChatComponent
+    ChatComponent,
+    Location
 }

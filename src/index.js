@@ -12,7 +12,8 @@ import {
    Hiring,
    BookPerson,
    HeiredReview,
-   ChatComponent
+   ChatComponent,
+   Location
 } from "./Components/index"
 
 
@@ -111,9 +112,14 @@ const MainNavigator = createStackNavigator({
         screen: ChatComponent,
 
     },
+    Location: {
+        screen: Location,
+
+    },
+
    
 }, {
-        initialRouteName: "SignComponent",
+        initialRouteName: "Location",
         transitionConfig,
     })
 
