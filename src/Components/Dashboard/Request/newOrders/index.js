@@ -10,7 +10,7 @@ class PendingRequests extends Component {
     componentWillMount() {
         const currentUser = this.props.currentUser.currentUser;
         // console.log(currentUser)
-        fetch("http://192.168.100.21:8000/getMyOrders", {
+        fetch("http://192.168.100.241:8000/getMyOrders", {
             method: "post",
             body: JSON.stringify(currentUser),
             headers: {
@@ -30,7 +30,7 @@ class PendingRequests extends Component {
 
     rejectOrder(data) {
         console.log(data)
-        fetch("http://192.168.100.21:8000/rejectOrder", {
+        fetch("http://192.168.100.241:8000/rejectOrder", {
             method: "post",
             body: JSON.stringify(data),
             headers: {
@@ -43,7 +43,7 @@ class PendingRequests extends Component {
 
     acceptOrder(data) {
         console.log(data)
-        fetch("http://192.168.100.21:8000/acceptOrder", {
+        fetch("http://192.168.100.241:8000/acceptOrder", {
             method: "post",
             body: JSON.stringify(data),
             headers: {

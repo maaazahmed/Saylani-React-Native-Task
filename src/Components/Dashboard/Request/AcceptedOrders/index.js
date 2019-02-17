@@ -10,7 +10,7 @@ class AcceptOrders extends Component {
     componentWillMount() {
         const currentUser = this.props.currentUser.currentUser;
         console.log(currentUser)
-        fetch("http://192.168.100.21:8000/getAcceptedOrder", {
+        fetch("http://192.168.100.241:8000/getAcceptedOrder", {
             method: "post",
             body: JSON.stringify(currentUser),
             headers: {

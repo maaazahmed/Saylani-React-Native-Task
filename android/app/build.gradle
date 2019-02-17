@@ -134,6 +134,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-maps')
     compile project(':react-native-google-signin')
     compile project(':react-native-fbsdk')
     compile project(':react-native-firebase')
@@ -148,6 +149,8 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:16.1.0"
      implementation 'com.facebook.android:facebook-login:[4,5)'
        implementation "com.google.firebase:firebase-database:16.0.5"
+         implementation project(':react-native-maps')
+
 
 
 

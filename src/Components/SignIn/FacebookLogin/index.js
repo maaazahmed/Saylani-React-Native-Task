@@ -44,7 +44,7 @@ import { currentUserAction } from "../../../store/action/action"
       /********************************************** */
       delete user.providerData
       // console.log(user)
-      fetch(`http://192.168.100.21:8000/setUser`, {
+      fetch(`http://192.168.100.241:8000/setUser`, {
         method: "post",
         body: JSON.stringify(user),
         headers: {

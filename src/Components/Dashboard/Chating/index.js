@@ -65,7 +65,7 @@ class ChatComponent extends Component {
             database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
             database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
             this.setState({
-                messageValue: ""
+                messageVal: ""
             })
         }
 
@@ -87,35 +87,29 @@ class ChatComponent extends Component {
                             <View
                                 style={(item.senderId === currentUser.uid) ?
                                     {
-                                        color: "#fff",
-                                        backgroundColor: "#a10000",
+                                        backgroundColor: "#512da7",
                                         fontSize: 20,
                                         marginTop: 10,
                                         width: 200,
-                                        borderRadius: 25,
+                                        borderRadius: 2,
                                         margin: 15,
-                                        padding: 13,
+                                        padding: 5,
                                         alignSelf: "flex-end",
-
-                                    }
-                                    :
-                                    {
-                                        color: "#fff",
-                                        backgroundColor: "#f2f2f2",
+                                    }:{
+                                        backgroundColor: "#fff",
                                         fontSize: 20,
                                         marginTop: 10,
                                         width: 200,
-                                        borderRadius: 25,
+                                        borderRadius: 2,
                                         margin: 15,
-                                        padding: 13,
+                                        padding: 5,
                                         alignSelf: "flex-start"
-
                                     }} >
                                 <Text
                                     style={(item.senderId === currentUser) ?
-                                        { color: "#fff", fontSize: 20, } :
-                                        { color: "#a10000", fontSize: 20 }}
-                                >{item. messageText}</Text>
+                                        { color: "#512da7", fontSize: 17, textAlign: "center" } :
+                                        { color: "#fff", fontSize: 17, textAlign: "center" }}
+                                >{item.messageText}</Text>
                             </View>
                         )
                     }} />
