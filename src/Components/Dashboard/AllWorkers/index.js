@@ -38,34 +38,28 @@ class AllWorkers extends Component {
         // if (distance < 5) {
         // }
 
-        fetch(`http://192.168.100.139:8000/allWorkers`, {
+        fetch(`http://192.168.0.103:8000/allWorkers`, {
             method: "get",
         }).then((res) => {
-
-
-
-            const myLocation = [
-                { latitude: 52.516272, longitude: 13.377722 },
-                { latitude: 51.518, longitude: 7.45425 },
-                { latitude: 51.503333, longitude: -0.119722 }
-            ]
-            // {
-            //     latitude: currentUser.location.latitude,
-            //     longitude: currentUser.location.longitude,
-            // }
-            
-            const data = JSON.parse(res._bodyInit)
-            console.log(data, "======================", myLocation)
-            const a = geolib.orderByDistance({
+            const myLocation = {
                 latitude: currentUser.location.latitude,
                 longitude: currentUser.location.longitude,
-            },
-                myLocation
-            );
-
-
-
-            this.props.AllWorkersAction(data)
+            }
+            const data = JSON.parse(res._bodyInit)
+            const arr = []
+            for (let i = 0; i < data.length; i++) {
+                const element = data[i];
+                const location = data[i].serviceProvider.location
+                const a = geolib.getDistance(myLocation,
+                    {
+                        latitude: location.latitude,
+                        longitude: location.longitude
+                    });
+                if (a < 10) {
+                   arr.push(element)
+                 }
+            }
+            this.props.AllWorkersAction(arr)
         }).catch((error) => {
             console.log("Error:", error)
         })

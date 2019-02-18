@@ -72,7 +72,7 @@ class Home extends Component {
 
     componentWillMount() {
 
-        fetch("http://192.168.100.79:8000/getCategory", {
+        fetch("http://192.168.0.103:8000/getCategory", {
             method: "get"
         })
             .then((suc) => {
@@ -163,7 +163,7 @@ class Home extends Component {
             currentUser: currentUser.uid
         }
 
-        fetch("http://192.168.100.79:8000/svaeLocation", {
+        fetch("http://192.168.0.103:8000/svaeLocation", {
             method: "post",
             body: JSON.stringify(obj),
             headers: {
