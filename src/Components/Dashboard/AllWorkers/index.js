@@ -11,30 +11,70 @@ import {
 import { Icon } from "native-base"
 import { connect } from "react-redux"
 import { AllWorkersAction, choseServisesAction } from "../../../store/action/action"
+import SearchInput, { createFilter } from 'react-native-search-filter';
+import geolib from "geolib"
 
 
-
-
-
+const KEYS_TO_FILTERS = ["serviceProvider.emailForUser", "serviceProvider.phoneNumber"];
 const { height } = Dimensions.get("window")
 class AllWorkers extends Component {
+    constructor() {
+        super()
+        this.state = {
+            searchTerm: '',
+        }
+    }
 
     componentWillMount() {
         const currentCategory = this.props.currentCategory.currentCategory;
+        const currentUser = this.props.currentUser.currentUser
         const obj = {
             id: currentCategory._id
         }
 
 
-        fetch(`http://192.168.100.21:8000/allWorkers`, {
+        // console.log(a, currentUser.location,"AAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAA")
+        // let distance = geofire.distance([User1Lat, User1Lon], [User2Lat, User2Lon])
+        // if (distance < 5) {
+        // }
+
+        fetch(`http://192.168.100.139:8000/allWorkers`, {
             method: "get",
         }).then((res) => {
-            console.log(JSON.parse(res._bodyInit), "current")
-            this.props.AllWorkersAction(JSON.parse(res._bodyInit))
+
+
+
+            const myLocation = [
+                { latitude: 52.516272, longitude: 13.377722 },
+                { latitude: 51.518, longitude: 7.45425 },
+                { latitude: 51.503333, longitude: -0.119722 }
+            ]
+            // {
+            //     latitude: currentUser.location.latitude,
+            //     longitude: currentUser.location.longitude,
+            // }
+            
+            const data = JSON.parse(res._bodyInit)
+            console.log(data, "======================", myLocation)
+            const a = geolib.orderByDistance({
+                latitude: currentUser.location.latitude,
+                longitude: currentUser.location.longitude,
+            },
+                myLocation
+            );
+
+
+
+            this.props.AllWorkersAction(data)
         }).catch((error) => {
             console.log("Error:", error)
         })
     }
+
+    searchUpdated(term) {
+        this.setState({ searchTerm: term })
+    }
+
 
     choseServises(data) {
         console.log(data, "DATA")
@@ -43,12 +83,42 @@ class AllWorkers extends Component {
     }
 
 
+
+
+
+
+
+
+
+
+    a() {
+        let distance = geofire.distance([User1Lat, User1Lon], [User2Lat, User2Lon])
+        if (distance < 5) {
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     render() {
-        const currentUser =  this.props.currentUser.currentUser
+        const currentUser = this.props.currentUser.currentUser
         let allWokers = this.props.allWokers.allWokers;
-        console.log(allWokers, "servic888888888888888888888888eList")
+        const filteredData = allWokers.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+        console.log(filteredData, "filteredData")
+
         return (
-            <View style={{ flex: 1, backgroundColor: "#f2f2f2" }} >
+            <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
                 <View style={{ flex: 1, zIndex: 0, backgroundColor: "#512da7" }}>
                 </View>
 
@@ -61,11 +131,8 @@ class AllWorkers extends Component {
                     bottom: 0
                 }} >
                     <View style={{ height: "20%", justifyContent: "center" }} >
-                        <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 15 }} >
-                            <Text style={{ fontSize: 19, color: "#fff", fontWeight: "300" }} > Categories</Text>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate("AddServis")} style={{}} >
-                                <Icon name="add" style={{ color: "#fff", fontSize: 25, }} />
-                            </TouchableOpacity>
+                        <View style={{ flex: 1, flexDirection: "row", padding: 15 }} >
+                            <Text style={{ fontSize: 19, color: "#fff", fontWeight: "300" }} > All Weokers</Text>
                         </View>
                         <View style={{ height: "50%", alignItems: "center", marginTop: 10, }} >
                             <View style={{
@@ -73,21 +140,23 @@ class AllWorkers extends Component {
                                 borderRadius: 3, flexDirection: "row", alignItems: "center", paddingLeft: 15, paddingRight: 15
                             }}>
                                 <Icon name="search" style={{ color: "#8a60ff", fontSize: 20, }} />
-                                <TextInput placeholder="Search" placeholderTextColor="#8a60ff" style={{ flex: 1, backgroundColor: "#462997", borderRadius: 3, fontSize: 17, color: "#fff" }} />
+                                <TextInput
+                                    onChangeText={(term) => { this.searchUpdated(term) }}
+                                    placeholder="Search by email, contact or location" placeholderTextColor="#8a60ff"
+                                    style={{ flex: 1, backgroundColor: "#462997", borderRadius: 3, fontSize: 17, color: "#fff" }} />
                             </View>
                         </View>
 
                     </View>
 
-                    <View style={{ flex: 1, marginTop: 10 }} >
+                    <View style={{ flex: 1, }} >
                         <FlatList
-                            data={allWokers}
+                            data={filteredData}
                             renderItem={({ item, index }) => {
-                               
-                                return  (item.serviceProvider.uid !== currentUser.uid)? (
+                                return (item.serviceProvider.uid !== currentUser.uid) ? (
                                     <View key={index} style={{
-                                        backgroundColor: "#fff", padding: 5, borderRadius: 2,
-                                        marginTop: 10, marginBottom: 10, marginLeft: 20, marginRight: 20, flexDirection: "row"
+                                        backgroundColor: "#fff", padding: 5,
+                                        marginTop: 3, flexDirection: "row"
                                     }} >
                                         <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }} >
                                             <Image
@@ -112,22 +181,10 @@ class AllWorkers extends Component {
                                                     }} >
                                                     <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Hire me</Text>
                                                 </TouchableOpacity>
-
-                                                {/* <TouchableOpacity
-                                                    // onPress={this.choseServises.bind(this, item)}
-                                                    activeOpacity={0.5} style={{
-                                                        backgroundColor: "#fff", borderRadius: 4,
-                                                        padding: 4, width: 50, flexDirection: "row", justifyContent: "space-around",
-                                                        alignItems: "center",
-                                                        margin: 10
-                                                    }} >
-                                                    <Icon name="chatboxes" style={{ color: "#6144b3", fontSize: 23, }} />
-                                                </TouchableOpacity> */}
-                                                
                                             </View>
                                         </View>
                                     </View>
-                                ):null
+                                ) : null
                             }}
                             keyExtractor={(item) => item._id}
                         />

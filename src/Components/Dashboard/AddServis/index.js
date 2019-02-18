@@ -23,7 +23,7 @@ class AddServis extends Component {
         }
     }
 
-    
+
 
 
     AddService() {
@@ -40,21 +40,23 @@ class AddServis extends Component {
             serviceVal,
             discription,
             categoryID: currentCategory._id,
-            serviceProvider:currentUser
+            serviceProvider: currentUser,
+            uid: currentUser.uid
         }
+        console.log(obj)
 
-        fetch("http://192.168.100.21:8000/addService", {
+        fetch("http://192.168.100.79:8000/addService", {
             method: "post",
-            body:JSON.stringify(obj),
+            body: JSON.stringify(obj),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res)
             this.props.navigation.navigate("ViewCategory")
-        }).catch((err)=>{
-          console.log(err)
+        }).catch((err) => {
+            console.log(err)
         })
     }
 

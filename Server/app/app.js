@@ -2,7 +2,9 @@ const express = require("express")
 const router = express.Router()
 const mongodb = require("mongodb");
 const db = mongodb.MongoClient;
-const url = "mongodb://maazahmed:maazahmed1@ds163764.mlab.com:63764/learn_mongodb"
+const url = "mongodb://maazahmed:maazahmed1@ds163764.mlab.com:63764/learn_mongodb";
+
+// HFV54SM2P4AYICPMSYNY3G3AO0OA2BNFGVDNPIOCWVG212NS
 
 
 router.post("/setUser", (req, res) => {
@@ -233,7 +235,7 @@ router.post("/myOrders", (req, res) => {
 
 
 router.post("/getMyOrders", (req, res) => {
-    console.log(req.body.uid)
+    // console.log(req.body.uid)
     db.connect(url, (err, suc) => {
         if (err) {
             res.send(err)
@@ -285,7 +287,7 @@ router.post("/acceptOrder", (req, res) => {
         }
         else {
             const dbo = succes.db("learn_mongodb")
-            dbo.collection("AcceptedOrder").insert(order, (err, done) => {
+            dbo.collection("/AcceptedOrder").insert(order, (err, done) => {
                 if (err) throw err;
                 else {
                     const query = { selecterPersonID: req.body.selecterPersonID, selectedPerson: req.body.selectedPerson }
@@ -414,13 +416,45 @@ router.get("/allWorkers", (req, res) => {
                     res.send(fail)
                 }
                 else {
-                    console.log(data,"data")
+                    console.log(data, "data")
                     res.send(data)
                 }
             })
         }
     })
 })
+
+
+
+
+
+
+
+router.post("/svaeLocation", (req, res) => {
+    console.log(req.body.currentUser, "---")
+    console.log(req.body.location, "---")
+    db.connect(url, (err, suc) => {
+        if (err) throw err;
+        else {
+            const dbo = suc.db("learn_mongodb")
+            // dbo.collection("Services").updateOne({ uid: req.body.currentUser },
+            //      { $set: { location: req.body.location } }, (error, data) => {
+            //     if (error) throw error
+            //     else {
+            //         console.log(data)
+            //     }
+            // })
+            dbo.collection("User").updateOne({ uid: req.body.currentUser },
+                { $set: { location: req.body.location } }, (error, data) => {
+               if (error) throw error
+               else {
+                   console.log(data)
+               }
+           })
+        }
+    })
+})
+
 
 
 

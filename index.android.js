@@ -6,7 +6,7 @@ import firebase from 'react-native-firebase'
 import AppNavigator from "./src/index"
 import { Provider } from "react-redux"
 import store from "./src/store/index"
-
+// import GooglePlacesInput from "./src/Components/Example/index"
 
 
 export default class Main extends Component {
@@ -15,8 +15,8 @@ export default class Main extends Component {
     return (
       <Provider store={store} >
         {/* <View style={styles.container}> */}
-          <AppNavigator />
-        {/* </View> */}
+        <AppNavigator />
+        {/* <GooglePlacesInput /> */}
       </Provider>
     );
   }

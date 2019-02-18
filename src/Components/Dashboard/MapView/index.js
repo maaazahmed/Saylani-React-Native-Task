@@ -28,7 +28,7 @@ const LONGITUDE_DELTA = 0.009;
 
 class Location extends React.Component {
     static navigationOptions = {
-        title: 'Add Service',
+        title: 'Locatio',
         headerStyle: { backgroundColor: '#512da7' },
         headerTitleStyle: { color: '#fff' },
         headerTintColor: '#ffffff',

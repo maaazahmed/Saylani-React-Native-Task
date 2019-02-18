@@ -18,7 +18,6 @@ import {
 
 
 
-
 const transitionConfig = () => {
     return {
         transitionSpec: {
@@ -84,15 +83,9 @@ const MainNavigator = createStackNavigator({
     },
     ViewCategory: {
         screen: ViewCategory,
-        navigationOptions: {
-            header: null
-        },
     },
     AddServis: {
         screen: AddServis,
-        // navigationOptions: {
-        //     header: null
-        // },
     },
     Hiring: {
         screen: Hiring,

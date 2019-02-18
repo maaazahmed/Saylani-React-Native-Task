@@ -7,4 +7,4 @@ import { AppRegistry } from 'react-native';
 import Main from './index.android.js';
 import { name as appName } from './app.json';
 
-AppRegistry.registerComponent("FamilyTracker", () => Main);
+AppRegistry.registerComponent(appName, () => Main);
