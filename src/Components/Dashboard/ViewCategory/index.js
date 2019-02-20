@@ -37,7 +37,7 @@ class ViewCategory extends Component {
         const obj = {
             id: currentCategory._id
         }
-        fetch(`http://192.168.100.241:8000/getServieces`, {
+        fetch(`http://192.168.100.197:8000/getServieces`, {
             method: "post",
             body: JSON.stringify(obj),
             headers: {

@@ -72,7 +72,7 @@ class Home extends Component {
 
     componentWillMount() {
 
-        fetch("http://192.168.0.103:8000/getCategory", {
+        fetch("http://192.168.100.197:8000/getCategory", {
             method: "get"
         })
             .then((suc) => {
