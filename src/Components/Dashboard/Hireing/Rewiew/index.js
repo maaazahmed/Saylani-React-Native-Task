@@ -12,7 +12,7 @@ class Review extends Component {
     componentWillMount() {
         // const currentUser = this.props.currentUser.currentUser;
         const choseServises = this.props.choseServises.choseServises;
-        fetch("http://192.168.100.21:8000/getRatting", {
+        fetch("http://192.168.100.197:8000/getRatting", {
             method: "post",
             body: JSON.stringify({ uid: choseServises.serviceProvider.uid }),
             headers: {

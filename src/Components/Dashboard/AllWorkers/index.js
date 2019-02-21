@@ -38,7 +38,7 @@ class AllWorkers extends Component {
         // if (distance < 5) {
         // }
 
-        fetch(`http://192.168.0.103:8000/allWorkers`, {
+        fetch(`http://192.168.100.197:8000/allWorkers`, {
             method: "get",
         }).then((res) => {
             const myLocation = {

@@ -75,11 +75,8 @@ class ChatComponent extends Component {
     render() {
         const messageList = this.props.messageList.messageList
         const currentUser = this.props.currentUser.currentUser;
-
-        console.log(messageList)
         return (
             <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
-
                 <View style={{ flex: 1, backgroundColor: "#f3f3f3", }} >
                     <FlatList data={messageList} renderItem={({ item, index }) => {
                         return (
@@ -145,9 +142,6 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        // AcceptedOrderAction: (data) => {
-        //     dispatch(AcceptedOrderAction(data))
-        // },
         messageListAction: (data) => {
             dispatch(messageListAction(data))
         },

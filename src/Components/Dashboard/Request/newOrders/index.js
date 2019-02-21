@@ -10,7 +10,7 @@ class PendingRequests extends Component {
     componentWillMount() {
         const currentUser = this.props.currentUser.currentUser;
         // console.log(currentUser)
-        fetch("http://192.168.0.102:8000/getMyOrders", {
+        fetch("http://192.168.100.197:8000/getMyOrders", {
             method: "post",
             body: JSON.stringify(currentUser),
             headers: {

@@ -23,7 +23,7 @@ class Profile extends Component {
     componentDidMount() {
         const currentUser = this.props.currentUser.currentUser;
 
-        fetch("http://192.168.100.21:8000/getMyratting"
+        fetch("http://192.168.100.197:8000/getMyratting"
             , {
                 method: "post",
                 body: JSON.stringify({ uid: currentUser.uid }),
@@ -51,7 +51,7 @@ class Profile extends Component {
             uid: currentUser.uid
 
         }
-        fetch("http://192.168.100.29:8000/mailEdit"
+        fetch("http://192.168.100.197:8000/mailEdit"
             , {
                 method: "post",
                 body: JSON.stringify(obj),
@@ -80,7 +80,7 @@ class Profile extends Component {
             phoneNumber: this.state.phonNumerVale,
             uid: currentUser.uid
         }
-        fetch("http://192.168.100.21:8000/nhoneNumberEdit"
+        fetch("http://192.168.100.197:8000/nhoneNumberEdit"
             , {
                 method: "post",
                 body: JSON.stringify(obj),

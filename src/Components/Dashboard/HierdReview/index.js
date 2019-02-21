@@ -38,7 +38,7 @@ class HeiredReview extends Component {
 
         if (obj.commentVal !== "") {
             console.log(obj, "-----------------")
-            fetch("http://192.168.0.102:8000/saveRatting"
+            fetch("http://192.168.100.197:8000/saveRatting"
                 , {
                     method: "post",
                     body: JSON.stringify(obj),
