@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, FlatList, Text } from "react-native"
 import { Icon } from "native-base"
 import { connect } from "react-redux"
 import firebase from "react-native-firebase"
-import { adminDataAction } from "../../../store/action/action"
+import { adminDataAction, messageListAction } from "../../../store/action/action"
 
 
 
@@ -66,22 +66,23 @@ class AdminChat extends Component {
 
     // }
 
-    componentDidMount() {
+    componentWillMount() {
         const currentUser = this.props.currentUser.currentUser;
         const chater = this.props.adminData.adminData;
         const obj = {
             senderId: currentUser.uid,
             reseverId: chater.uid,
         }
-        console.log(obj)
-        var arr = []
-         database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
-             var messages = snap.val()
-             for (key in messages) {
-                 arr.push({ ...messages[key], key })
-             }
-             console.log(arr)
-         })
+        database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
+            var arr = [];
+            var messages = snap.val()
+            console.log(messages)
+            for (key in messages) {
+                arr.push({ ...messages[key], key })
+            }
+            this.props.messageListAction(arr)
+            console.log(arr)
+        })
     }
 
 
@@ -89,18 +90,15 @@ class AdminChat extends Component {
     onMessageSend() {
         const { messageVal } = this.state
         const currentUser = this.props.currentUser.currentUser;
-
-
         const chater = this.props.adminData.adminData;
-        console.log(chater)
         if (messageVal !== "") {
             const obj = {
                 senderId: currentUser.uid,
                 reseverId: chater.uid,
                 messageText: messageVal
             }
-            // database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
-            // database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
+            database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
+            database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
             // this.setState({
             //     messageVal: ""
             // })
@@ -182,6 +180,9 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
+        messageListAction: (data) => {
+            dispatch(messageListAction(data))
+        },
         adminDataAction: (data) => {
             dispatch(adminDataAction(data))
         },
