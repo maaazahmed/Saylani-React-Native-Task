@@ -505,6 +505,42 @@ router.get("/getAdmin", (req, res) => {
     })
 })
 
+router.post("/deleteUser", (req, res) => {
+    console.log(req.body)
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("User").deleteOne({ uid: req.body.uid }, (err2, data) => {
+                if (err2) {
+                    res.send(err)
+                }
+                else {
+                    dbo.collection("Services").deleteOne({ uid: req.body.uid }, (err2, data) => {
+                        if (err2) {
+                            res.send(err)
+                        }
+                        else {
+                            dbo.collection("Comment").deleteOne({ uid: req.body.uid }, (err2, data) => {
+                                if (err2) {
+                                    res.send(err)
+                                }
+                                else {
+                                  res.send({
+                                      Message:"User Deleteed"
+                                  })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+})
+
 
 module.exports = router
-// 
+//

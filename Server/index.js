@@ -27,7 +27,8 @@ app.use("/svaeLocation", router);
 app.use("/getUsers", router);
 app.use("/setStatus", router);
 app.use("/getAdmin", router);
-// mailEdit
+app.use("/deleteUser", router);
+// 
 
 
 app.listen(app.get("port"), (err, succ) => {
