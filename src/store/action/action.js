@@ -137,6 +137,7 @@ export const isLoaderAction = (data) => {
 
 
 export const adminDataAction = (data) => {
+    console.log(data,"ACRion")
     return dispatch => {
         dispatch({
             type: ActionTypes.ADMIN_DATA,

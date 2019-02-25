@@ -34,40 +34,55 @@ class AdminChat extends Component {
         }
     }
 
+    // componentWillMount() {
+    //     const { messageVal } = this.state
+    //     const currentUser = this.props.currentUser.currentUser;
+
+    //     fetch("http://192.168.100.156:8000/getAdmin", {
+    //         method: "get"
+    //     }).then((res) => {
+    //         const data = JSON.parse(res._bodyInit)
+    //         console.log(data)
+    //         this.props.adminDataAction(data)
+    //         // if (data) {
+    //         // const obj = {
+    //         //     senderId: currentUser.uid,
+    //         //     reseverId: data.uid,
+    //         // }
+    //         //    var arr = []
+    //         //    console.log(obj)
+    //         //     database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
+    //         //         var messages = snap.val()
+    //         //         for (key in messages) {
+    //         //             arr.push({ ...messages[key], key })
+    //         //         }
+    //         //         console.log(arr)
+    //         //     })
+    //         // }
+    //     }).catch((err) => {
+    //         console.log("Fail ", err)
+    //     })
+
+
+    // }
+
     componentDidMount() {
-        const { messageVal } = this.state
         const currentUser = this.props.currentUser.currentUser;
-
-        fetch("http://192.168.100.156:8000/getAdmin", {
-            method: "get"
-        }).then((res) => {
-            const data = JSON.parse(res._bodyInit)
-            this.props.adminDataAction(data)
-            if (data) {
-                const obj = {
-                    senderId: currentUser.uid,
-                    reseverId: data.uid,
-                    messageText: messageVal
-                }
-                let arr = []
-                console.log(obj)
-            }
-        }).catch((err) => {
-            console.log("Fail ", err)
-        })
-        
-        database.child(`rooms`).on("value", (snap) => {
-            var messages = snap.val()
-            console.log(messages, "catch")
-            // for (key in messages) {
-            //     arr.push({ ...messages[key], key })
-            // }
-            // console.log(arr)
-            // this.props.messageListAction(arr)
-        })
-
+        const chater = this.props.adminData.adminData;
+        const obj = {
+            senderId: currentUser.uid,
+            reseverId: chater.uid,
+        }
+        console.log(obj)
+        var arr = []
+         database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
+             var messages = snap.val()
+             for (key in messages) {
+                 arr.push({ ...messages[key], key })
+             }
+             console.log(arr)
+         })
     }
-
 
 
 
@@ -75,20 +90,20 @@ class AdminChat extends Component {
         const { messageVal } = this.state
         const currentUser = this.props.currentUser.currentUser;
 
-        const chater =this.props.adminData.adminData;
 
+        const chater = this.props.adminData.adminData;
+        console.log(chater)
         if (messageVal !== "") {
             const obj = {
                 senderId: currentUser.uid,
                 reseverId: chater.uid,
                 messageText: messageVal
             }
-            console.log(obj,"Maa")
-            database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
-            database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
-            this.setState({
-                messageVal: ""
-            })
+            // database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
+            // database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
+            // this.setState({
+            //     messageVal: ""
+            // })
         }
 
     }
@@ -97,7 +112,7 @@ class AdminChat extends Component {
     render() {
         const messageList = this.props.messageList.messageList
         const currentUser = this.props.currentUser.currentUser;
-       
+
         return (
             <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
                 <View style={{ flex: 1, backgroundColor: "#f3f3f3", }} >
@@ -162,7 +177,7 @@ const mapStateToProp = (state) => {
         currentUser: state.root,
         chater: state.root,
         messageList: state.root,
-        adminData:state.root,
+        adminData: state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {

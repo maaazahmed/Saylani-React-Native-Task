@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { Icon } from "native-base"
 import { connect } from "react-redux"
-import { categoryListAction, currentCategoryAction } from "../../../store/action/action"
+import { categoryListAction, currentCategoryAction, adminDataAction } from "../../../store/action/action"
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
 
@@ -79,6 +79,23 @@ class Home extends Component {
                 maximumAge: 1000
             }
         );
+
+
+        fetch("http://192.168.100.156:8000/getAdmin", {
+            method: "get"
+        }).then((res) => {
+            const data = JSON.parse(res._bodyInit)
+            // console.log(data)
+            this.props.adminDataAction(data)
+        }).catch((err) => {
+            console.log("Fail ", err)
+        })
+
+
+
+
+
+
     }
     componentDidMount() {
         const currentUser = this.props.currentUser.currentUser.location
@@ -366,6 +383,9 @@ const mapDispatchToProp = (dispatch) => {
         },
         currentCategoryAction: (data) => {
             dispatch(currentCategoryAction(data))
+        },
+        adminDataAction: (data) => {
+            dispatch(adminDataAction(data))
         },
     };
 };

@@ -89,6 +89,7 @@ export default (state = INITIAL_STATE, action) => {
                 isLoader: action.payload
             })
         case ActionTypes.ADMIN_DATA:
+        console.log(action.payload)
             return ({
                 ...state,
                 adminData: action.payload
