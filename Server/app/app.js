@@ -432,6 +432,7 @@ router.get("/allWorkers", (req, res) => {
 
 
 router.post("/svaeLocation", (req, res) => {
+    
     db.connect(url, (err, suc) => {
         if (err) throw err;
         else {
@@ -506,7 +507,6 @@ router.get("/getAdmin", (req, res) => {
 })
 
 router.post("/deleteUser", (req, res) => {
-    console.log(req.body)
     db.connect(url, (err, suc) => {
         if (err) {
             res.send(err)
