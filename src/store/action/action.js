@@ -136,5 +136,15 @@ export const isLoaderAction = (data) => {
 }
 
 
+export const adminDataAction = (data) => {
+    return dispatch => {
+        dispatch({
+            type: ActionTypes.ADMIN_DATA,
+            payload: data
+        })
+    }
+}
+
+
 
 

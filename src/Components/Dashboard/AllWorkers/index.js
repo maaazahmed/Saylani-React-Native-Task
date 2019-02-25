@@ -11,7 +11,7 @@ import {
 import { Icon } from "native-base"
 import { connect } from "react-redux"
 import { AllWorkersAction, choseServisesAction } from "../../../store/action/action"
-import SearchInput, { createFilter } from 'react-native-search-filter';
+import { createFilter } from 'react-native-search-filter';
 import geolib from "geolib"
 
 
@@ -31,13 +31,6 @@ class AllWorkers extends Component {
         const obj = {
             id: currentCategory._id
         }
-
-
-        // console.log(a, currentUser.location,"AAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAA")
-        // let distance = geofire.distance([User1Lat, User1Lon], [User2Lat, User2Lon])
-        // if (distance < 5) {
-        // }
-
         fetch(`http://192.168.100.197:8000/allWorkers`, {
             method: "get",
         }).then((res) => {
@@ -55,9 +48,9 @@ class AllWorkers extends Component {
                         latitude: location.latitude,
                         longitude: location.longitude
                     });
-                if (a < 10) {
-                   arr.push(element)
-                 }
+                if (a < 10 ) {
+                    arr.push(element)
+                }
             }
             this.props.AllWorkersAction(arr)
         }).catch((error) => {
@@ -77,39 +70,10 @@ class AllWorkers extends Component {
     }
 
 
-
-
-
-
-
-
-
-
-    a() {
-        let distance = geofire.distance([User1Lat, User1Lon], [User2Lat, User2Lon])
-        if (distance < 5) {
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     render() {
         const currentUser = this.props.currentUser.currentUser
         let allWokers = this.props.allWokers.allWokers;
         const filteredData = allWokers.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-        console.log(filteredData, "filteredData")
 
         return (
             <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
@@ -140,49 +104,57 @@ class AllWorkers extends Component {
                                     style={{ flex: 1, backgroundColor: "#462997", borderRadius: 3, fontSize: 17, color: "#fff" }} />
                             </View>
                         </View>
-
                     </View>
 
-                    <View style={{ flex: 1, }} >
-                        <FlatList
-                            data={filteredData}
-                            renderItem={({ item, index }) => {
-                                return (item.serviceProvider.uid !== currentUser.uid) ? (
-                                    <View key={index} style={{
-                                        backgroundColor: "#fff", padding: 5,
-                                        marginTop: 3, flexDirection: "row"
-                                    }} >
-                                        <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }} >
-                                            <Image
-                                                style={{ height: 70, width: 70, borderRadius: height }} resizeMode={"stretch"}
-                                                source={{ uri: item.serviceProvider.profilePic }} />
+                    {(filteredData.length < 1) ?
+                        <View style={{
+                            flex: 1,
+                            justifyContent: "center", alignItems: "center"
+                        }} >
+                            <Image source={require("../../../assats/noreques.png")} style={{ height: 150, width: 150 }} resizeMode="stretch" />
+                            <Text style={{ color: "#454545", fontSize: 22, marginTop: 3 }} >No Worker Yet</Text>
+                        </View>
+                        :
+                        <View style={{ flex: 1, }} >
+                            <FlatList
+                                data={filteredData}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View key={index} style={{
+                                            backgroundColor: "#fff", padding: 5,
+                                            marginTop: 3, flexDirection: "row"
+                                        }} >
+                                            <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }} >
+                                                <Image
+                                                    style={{ height: 70, width: 70, borderRadius: height }} resizeMode={"stretch"}
+                                                    source={{ uri: item.serviceProvider.profilePic }} />
+                                            </View>
+                                            <View style={{ flex: 1, marginLeft: 10 }} >
+                                                <View style={{ padding: 5 }} >
+                                                    <Text style={{ color: "#1f1f1f", fontSize: 19, fontWeight: "400" }}>{item.serviceProvider.username}</Text>
+                                                </View>
+                                                <View style={{ flex: 1, paddingLeft: 5, justifyContent: "center", }} >
+                                                    <Text note style={{ color: "#383a3c", }}>{item.discription}</Text>
+                                                </View>
+                                                <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1, alignItems: "center" }} >
+                                                    <TouchableOpacity
+                                                        onPress={this.choseServises.bind(this, item)}
+                                                        activeOpacity={0.5} style={{
+                                                            backgroundColor: "#6144b3", borderRadius: 4,
+                                                            padding: 4, width: 70, flexDirection: "row", justifyContent: "space-around",
+                                                            alignItems: "center",
+                                                            margin: 10
+                                                        }} >
+                                                        <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Hire me</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
                                         </View>
-                                        <View style={{ flex: 1, marginLeft: 10 }} >
-                                            <View style={{ padding: 5 }} >
-                                                <Text style={{ color: "#1f1f1f", fontSize: 19, fontWeight: "400" }}>{item.serviceProvider.username}</Text>
-                                            </View>
-                                            <View style={{ flex: 1, paddingLeft: 5, justifyContent: "center", }} >
-                                                <Text note style={{ color: "#383a3c", }}>{item.discription}</Text>
-                                            </View>
-                                            <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1, alignItems: "center" }} >
-                                                <TouchableOpacity
-                                                    onPress={this.choseServises.bind(this, item)}
-                                                    activeOpacity={0.5} style={{
-                                                        backgroundColor: "#6144b3", borderRadius: 4,
-                                                        padding: 4, width: 70, flexDirection: "row", justifyContent: "space-around",
-                                                        alignItems: "center",
-                                                        margin: 10
-                                                    }} >
-                                                    <Text style={{ fontSize: 16, color: "#fff", fontWeight: "300", }} >Hire me</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                ) : null
-                            }}
-                            keyExtractor={(item) => item._id}
-                        />
-                    </View>
+                                    )
+                                }}
+                                keyExtractor={(item) => item._id}
+                            />
+                        </View>}
                 </View>
             </View>
         )

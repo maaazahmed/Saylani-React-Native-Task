@@ -5,15 +5,16 @@ import {
 } from 'react-native'
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import {
-   SignComponent,
-   Dashboard,
-   ViewCategory,
-   AddServis,
-   Hiring,
-   BookPerson,
-   HeiredReview,
-   ChatComponent,
-   Location
+    SignComponent,
+    Dashboard,
+    ViewCategory,
+    AddServis,
+    Hiring,
+    BookPerson,
+    HeiredReview,
+    ChatComponent,
+    Location,
+    AdminChat
 } from "./Components/index"
 
 
@@ -110,7 +111,11 @@ const MainNavigator = createStackNavigator({
 
     },
 
-   
+    AdminChat: {
+        screen: AdminChat,
+    },
+
+
 }, {
         initialRouteName: "SignComponent",
         transitionConfig,

@@ -131,6 +131,7 @@ router.get("/getCategory", (req, res) => {
 
 
 router.post("/mailEdit", (req, res) => {
+    console.log(req.body)
     db.connect(url, (err, suc) => {
         if (err) throw err;
         else {
@@ -139,7 +140,11 @@ router.post("/mailEdit", (req, res) => {
             dbo.collection("User").updateOne({ uid: req.body.uid }, newvalues, (error, data) => {
                 if (error) throw error
                 else {
-                    console.log(data)
+                    suc.close(() => {
+                        res.send({
+                            Message: "Email number successfuly updated"
+                        })
+                    })
                 }
             })
         }
@@ -222,7 +227,7 @@ router.post("/myOrders", (req, res) => {
                 if (error) throw error;
                 else {
                     res.send({
-                        Message: "Data Save"
+                        Message: "Order submited successfuly !"
                     })
                 }
             })
@@ -269,7 +274,6 @@ router.post("/rejectOrder", (req, res) => {
                         res.send({
                             Message: "Order rejected"
                         })
-                        conscole.log(done)
                     })
                 }
             })
@@ -287,7 +291,7 @@ router.post("/acceptOrder", (req, res) => {
         }
         else {
             const dbo = succes.db("learn_mongodb")
-            dbo.collection("/AcceptedOrder").insert(order, (err, done) => {
+            dbo.collection("AcceptedOrder").insert(order, (err, done) => {
                 if (err) throw err;
                 else {
                     const query = { selecterPersonID: req.body.selecterPersonID, selectedPerson: req.body.selectedPerson }
@@ -342,8 +346,11 @@ router.post("/saveRatting", (req, res) => {
                     res.send(err)
                 }
                 else {
-                    res.send({
-                        Message: "Commint send"
+                    dbo.collection("AcceptedOrder").deleteOne({ selectedPerson: req.body.uid }, (err2, data) => {
+                        if (err2) throw err2;
+                        res.send({
+                            Message: "done"
+                        })
                     })
                 }
             })
@@ -433,11 +440,11 @@ router.post("/svaeLocation", (req, res) => {
                 { $set: { location: req.body.location } }, (error) => {
                     if (error) throw error
                     else {
-                       suc.close(()=>{
-                           res.send({
-                               Message:"Location add successfuly !"
-                           })
-                       })
+                        suc.close(() => {
+                            res.send({
+                                Message: "Location add successfuly !"
+                            })
+                        })
                     }
                 })
         }
@@ -483,5 +490,21 @@ router.post("/setStatus", (req, res) => {
     })
 })
 
+router.get("/getAdmin", (req, res) => {
+    db.connect(url, (err, suc) => {
+        if (err) {
+            res.send(err)
+        }
+        else {
+            const dbo = suc.db("learn_mongodb")
+            dbo.collection("admin").findOne({}, (err2, data) => {
+                if (err2) throw err2
+                res.send(data)
+            })
+        }
+    })
+})
+
 
 module.exports = router
+// 

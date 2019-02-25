@@ -28,7 +28,6 @@ class HeiredReview extends Component {
 
     giveCommint() {
         const currentUser = this.props.currentUser.currentUser;
-        // console.log(this.props.heiredPerson.finishedOrder)
         const obj = {
             uid: currentUser.uid,
             rating: this.state.rating,
@@ -37,7 +36,6 @@ class HeiredReview extends Component {
         }
 
         if (obj.commentVal !== "") {
-            console.log(obj, "-----------------")
             fetch("http://192.168.100.197:8000/saveRatting"
                 , {
                     method: "post",
@@ -47,9 +45,9 @@ class HeiredReview extends Component {
                         'Content-Type': 'application/json',
                     },
                 }).then((res) => {
-                   this.props.navigation.navigate("Dashboard")
+                    this.props.navigation.navigate("Dashboard")
                 }).catch((err) => {
-                    console.log(err, ",,,")
+                    console.log(err)
                 })
         }
         else {
@@ -111,8 +109,8 @@ class HeiredReview extends Component {
                     <View style={{ flex: 2, alignItems: "center", marginTop: 20 }} >
                         <View style={{ width: "90%" }} >
                             <Textarea
-                               value={this.state.commentVal}
-                               onChangeText={(commentVal)=>{this.setState({commentVal})}}
+                                value={this.state.commentVal}
+                                onChangeText={(commentVal) => { this.setState({ commentVal }) }}
                                 placeholderTextColor={"#512da7"}
                                 placeholder="Comment"
                                 // value={discription}

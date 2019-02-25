@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, FlatList, Text } from "react-native"
 import { Icon } from "native-base"
 import { connect } from "react-redux"
 import firebase from "react-native-firebase"
-import { messageListAction } from "../../../store/action/action"
+import { adminDataAction } from "../../../store/action/action"
 
 
 
@@ -14,7 +14,7 @@ import { messageListAction } from "../../../store/action/action"
 
 
 const database = firebase.database().ref("/")
-class ChatComponent extends Component {
+class AdminChat extends Component {
     static navigationOptions = (prop) => (
         {
             // title: prop.navigation.state.params.name,
@@ -22,7 +22,7 @@ class ChatComponent extends Component {
             headerStyle: { backgroundColor: '#512da7' },
             headerTitleStyle: { color: '#fff' },
             headerTintColor: '#ffffff',
-            
+
         }
     )
 
@@ -37,21 +37,34 @@ class ChatComponent extends Component {
     componentDidMount() {
         const { messageVal } = this.state
         const currentUser = this.props.currentUser.currentUser;
-        const chater = this.props.chater.finishedOrder;
-        const obj = {
-            senderId: currentUser.uid,
-            reseverId: chater.selecterPerson.uid,
-            messageText: messageVal
-        }
-        let arr = []
-        database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
-            var messages = snap.val()
-            for (key in messages) {
-                arr.push({ ...messages[key], key })
+
+        fetch("http://192.168.100.156:8000/getAdmin", {
+            method: "get"
+        }).then((res) => {
+            const data = JSON.parse(res._bodyInit)
+            if (data) {
+                console.log(data, "catch")
+                const obj = {
+                    senderId: currentUser.uid,
+                    reseverId: data.uid,
+                    messageText: messageVal
+                }
+                let arr = []
+                this.props.adminDataAction(obj)
+                database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
+                    var messages = snap.val()
+                    for (key in messages) {
+                        arr.push({ ...messages[key], key })
+                    }
+                    console.log(arr)
+                    // this.props.messageListAction(arr)
+                })
             }
-            this.props.messageListAction(arr)
+        }).catch((err) => {
+            console.log("Fail ", err)
         })
-        this.props.navigation.setParams({ name: chater.selecterPerson.username })
+
+
     }
 
 
@@ -149,11 +162,11 @@ const mapStateToProp = (state) => {
 };
 const mapDispatchToProp = (dispatch) => {
     return {
-        messageListAction: (data) => {
-            dispatch(messageListAction(data))
+        adminDataAction: (data) => {
+            dispatch(adminDataAction(data))
         },
 
     };
 };
 
-export default connect(mapStateToProp, mapDispatchToProp)(ChatComponent)
+export default connect(mapStateToProp, mapDispatchToProp)(AdminChat)

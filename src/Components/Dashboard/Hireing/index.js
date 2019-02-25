@@ -51,12 +51,12 @@ class Hiring extends Component {
                                             <Text style={{ fontSize: 17, color: "#fff", }} >Book Now</Text>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{ backgroundColor: "#fff", flex: 1, width: "60%", alignItems: "center", justifyContent: "center", borderColor: "#512da7", borderWidth: .5 }} >
+                                    {/* <TouchableOpacity style={{ backgroundColor: "#fff", flex: 1, width: "60%", alignItems: "center", justifyContent: "center", borderColor: "#512da7", borderWidth: .5 }} >
                                         <View style={{ width: "50%", height: "100%", flexDirection: "row", justifyContent: "space-around", alignItems: "center", }} >
                                             <Icon name="chatboxes" style={{ color: "#512da7", fontSize: 23, }} />
                                             <Text style={{ fontSize: 17, color: "#512da7", }} >Message</Text>
                                         </View>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </View>
                             </View>
                         </View>

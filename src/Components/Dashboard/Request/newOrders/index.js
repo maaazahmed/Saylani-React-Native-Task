@@ -30,20 +30,24 @@ class PendingRequests extends Component {
 
     rejectOrder(data) {
         console.log(data)
-        fetch("http://192.168.0.102:8000/rejectOrder", {
+        fetch("http://192.168.100.197:8000/rejectOrder", {
             method: "post",
             body: JSON.stringify(data),
             headers: {
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             }
+        }).then((res)=>{
+            console.log(res)
+        }).catch((err)=>{
+            console.log(err)
         })
     }
 
 
     acceptOrder(data) {
         console.log(data)
-        fetch("http://192.168.0.102:8000/acceptOrder", {
+        fetch("http://192.168.100.197:8000/acceptOrder", {
             method: "post",
             body: JSON.stringify(data),
             headers: {

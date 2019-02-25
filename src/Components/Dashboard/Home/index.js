@@ -10,7 +10,8 @@ import {
     Image,
     FlatList,
     Modal,
-    Dimensions
+    Dimensions,
+
 } from 'react-native';
 import { Icon } from "native-base"
 import { connect } from "react-redux"
@@ -57,27 +58,13 @@ class Home extends Component {
         }
     }
 
-
-    // onPressMap(event) {
-    //     const coordinate = event.nativeEvent.coordinate;
-    //     console.log(coordinate)
-    //     this.setState({
-    //         a: {
-    //             latitude: coordinate.latitude + SPACE,
-    //             longitude: coordinate.longitude + SPACE,
-    //         },
-    //     })
-    // }
-
-
+    // https://saylani-task-app.herokuapp.com/
     componentWillMount() {
-
-        fetch("http://192.168.100.197:8000/getCategory", {
+        fetch("https://saylani-task-app.herokuapp.com/getCategory", {
             method: "get"
         })
             .then((suc) => {
                 const data = JSON.parse(suc._bodyInit)
-                console.log(data)
                 this.props.categoryListAction(data)
             })
             .catch((err) => { console.log(err) })
@@ -178,31 +165,44 @@ class Home extends Component {
         this.setState({ modalVisible: false })
     }
 
+    adminChat() {
+        // const currentUser = this.props.currentUser.currentUser
+        // console.log(currentUser,"-----")
+        this.props.navigation.navigate("AdminChat")
+    }
 
+ 
 
     render() {
-        console.log(this.state.coordinate, "this.state.coordinate")
+        // console.log(this.state.coordinate, "this.state.coordinate")
         let categoryList = this.props.categoryList.cagoryList;
         const filteredData = categoryList.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
         return (
             <View style={{ flex: 1, backgroundColor: "#f2f2f2" }} >
-                <View style={{ flex: 1, zIndex: 0, backgroundColor: "#512da7" }}>
-                </View>
+                <View style={{ flex: 1, zIndex: 0, backgroundColor: "#512da7" }} />
 
-                <View style={{ flex: 2 }}>
-                </View>
+                <View style={{ flex: 2 }} />
+
                 <View style={{
                     position: "absolute",
                     top: 0,
-                    left: 0, right: 0,
-                    bottom: 0
+                    left: 0,
+                    right: 0,
+                    bottom: 55
                 }} >
+                    {/* <ion-icon name="chatboxes"></ion-icon> */}
                     <View style={{ height: "20%", justifyContent: "center" }} >
                         <View style={{ flex: 1, justifyContent: "center", padding: 15, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} >
                             <Text style={{ fontSize: 19, color: "#fff", fontWeight: "300" }} > Categories</Text>
-                            <TouchableOpacity onPress={() => this.setState({ modalVisible: true })} activeOpacity={0.5} >
-                                <Icon name="pin" style={{ fontSize: 23, color: "#fff" }} />
-                            </TouchableOpacity>
+                            <View style={{ flexDirection: "row", justifyContent: "space-around", width: "20%" }} >
+                                <TouchableOpacity onPress={this.adminChat.bind(this)} activeOpacity={0.5} >
+                                    <Icon name="chatboxes" style={{ fontSize: 23, color: "#fff" }} />
+                                </TouchableOpacity>
+
+                                <TouchableOpacity onPress={() => this.setState({ modalVisible: true })} activeOpacity={0.5} >
+                                    <Icon name="pin" style={{ fontSize: 23, color: "#fff" }} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={{ height: "50%", alignItems: "center", marginTop: 10, }} >
                             <View style={{
@@ -225,93 +225,91 @@ class Home extends Component {
                         </View>
                     </View>
 
-                    <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
-                        <FlatList
-                            data={filteredData}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <View key={index} style={{
-                                        backgroundColor: "#fff", height: 150, padding: 5, borderRadius: 2,
-                                        marginTop: 3, flexDirection: "row"
-                                    }} >
-                                        <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }} >
-                                            <Image
-                                                style={{ height: "90%", width: "90%", borderRadius: 3 }} resizeMode={"stretch"}
-                                                source={{ uri: item.image }} />
-                                        </View>
-                                        <View style={{ flex: 1, marginLeft: 10 }} >
-                                            <View style={{ padding: 5 }} >
-                                                <Text style={{ color: "#1f1f1f", fontSize: 19, fontWeight: "400" }}>{item.categoryVal}</Text>
-                                            </View>
-                                            <View style={{ flex: 1, padding: 5, justifyContent: "center", evolution: 5 }} >
-                                                <Text style={{ color: "#383a3c", fontSize: 15, }}>{item.dicription}</Text>
-                                            </View>
-                                            <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end", alignItems: "center", marginTop: 5 }} >
-                                                <TouchableOpacity onPress={this.selectedCategory.bind(this, item)} activeOpacity={0.5} style={{
-                                                    backgroundColor: "#6144b3", borderRadius: 50,
-                                                    padding: 7, width: 100, flexDirection: "row", justifyContent: "space-around",
-                                                    alignItems: "center",
-                                                }} >
-                                                    <Text style={{ fontSize: 14, color: "#fff", fontWeight: "300" }} >See</Text>
-                                                    <Icon name="eye" style={{ color: "#fff", fontSize: 17, }} />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                )
-                            }}
-                            keyExtractor={(item) => item._id} />
+                    {(filteredData.length < 1) ?
+                        <View style={{
+                            flex: 1,
+                            justifyContent: "center", alignItems: "center"
+                        }} >
 
-                        <Modal visible={this.state.modalVisible}
-                            transparent={true}
-                            onRequestClose={() => { }}
-                            animationType={"fade"} >
-                            <View style={{ flex: 1, backgroundColor: "#0000008c", justifyContent: "center", alignItems: "center" }} >
-                                <View style={{ height: "90%", width: "90%", backgroundColor: "#f2f2f2" }} >
-                                    <MapView
-                                        style={styles.map}
-                                        showUserLocation
-                                        followUserLocation
-                                        loadingEnabled
-                                        region={this.getMapRegion()}>
-                                        <Marker
-                                            coordinate={this.getMapRegion()}
-                                            onSelect={(e) => console.log('onSelect', e)}
-                                            onDrag={(e) => console.log('onDrag', e)}
-                                            onDragStart={(e) => console.log('onDragStart', e)}
-                                            onDragEnd={this._onDragEnd.bind(this)}
-                                            onPress={(e) => console.log('onPress', e)}
-                                            draggable={true}
-                                        ></Marker>
-                                    </MapView>
-                                    <View style={{ flexDirection: "row", width: "100%", height: 50, justifyContent: "space-around", alignItems: "center", position: "absolute", bottom: 5 }} >
-                                        <TouchableOpacity onPress={this.saveLocation.bind(this)} style={{ height: "100%", width: "40%", justifyContent: "center", alignItems: "center", backgroundColor: "#512da7" }} >
-                                            <Text style={{ color: "#fff", fontSize: 18 }} >
-                                                Save
+                            <Image source={require("../../../assats/noreques.png")} style={{ height: 150, width: 150 }} resizeMode="stretch" />
+                            <Text style={{ color: "#454545", fontSize: 22, marginTop: 3 }} >No Request Yet</Text>
+                        </View>
+                        :
+                        <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
+                            <FlatList
+                                data={filteredData}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View key={index} style={{
+                                            backgroundColor: "#fff", height: 150, padding: 5, borderRadius: 2,
+                                            marginTop: 3, flexDirection: "row"
+                                        }} >
+                                            <View style={{ width: "30%", justifyContent: "center", alignItems: "center" }} >
+                                                <Image
+                                                    style={{ height: "90%", width: "90%", borderRadius: 3 }} resizeMode={"stretch"}
+                                                    source={{ uri: item.image }} />
+                                            </View>
+                                            <View style={{ flex: 1, marginLeft: 10 }} >
+                                                <View style={{ padding: 5 }} >
+                                                    <Text style={{ color: "#1f1f1f", fontSize: 19, fontWeight: "400" }}>{item.categoryVal}</Text>
+                                                </View>
+                                                <View style={{ flex: 1, padding: 5, justifyContent: "center", evolution: 5 }} >
+                                                    <Text style={{ color: "#383a3c", fontSize: 15, }}>{item.dicription}</Text>
+                                                </View>
+                                                <View style={{ flexDirection: "row", flex: 1, justifyContent: "flex-end", alignItems: "center", marginTop: 5 }} >
+                                                    <TouchableOpacity onPress={this.selectedCategory.bind(this, item)} activeOpacity={0.5} style={{
+                                                        backgroundColor: "#6144b3", borderRadius: 50,
+                                                        padding: 7, width: 100, flexDirection: "row", justifyContent: "space-around",
+                                                        alignItems: "center",
+                                                    }} >
+                                                        <Text style={{ fontSize: 14, color: "#fff", fontWeight: "300" }} >See</Text>
+                                                        <Icon name="eye" style={{ color: "#fff", fontSize: 17, }} />
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    )
+                                }}
+                                keyExtractor={(item) => item._id} />
+
+                            <Modal visible={this.state.modalVisible}
+                                transparent={true}
+                                onRequestClose={() => { }}
+                                animationType={"fade"} >
+                                <View style={{ flex: 1, backgroundColor: "#0000008c", justifyContent: "center", alignItems: "center" }} >
+                                    <View style={{ height: "90%", width: "90%", backgroundColor: "#f2f2f2" }} >
+                                        <MapView
+                                            style={styles.map}
+                                            showUserLocation
+                                            followUserLocation
+                                            loadingEnabled
+                                            region={this.getMapRegion()}>
+                                            <Marker
+                                                coordinate={this.getMapRegion()}
+                                                onSelect={(e) => console.log('onSelect', e)}
+                                                onDrag={(e) => console.log('onDrag', e)}
+                                                onDragStart={(e) => console.log('onDragStart', e)}
+                                                onDragEnd={this._onDragEnd.bind(this)}
+                                                onPress={(e) => console.log('onPress', e)}
+                                                draggable={true}
+                                            ></Marker>
+                                        </MapView>
+                                        <View style={{ flexDirection: "row", width: "100%", height: 50, justifyContent: "space-around", alignItems: "center", position: "absolute", bottom: 5 }} >
+                                            <TouchableOpacity onPress={this.saveLocation.bind(this)} style={{ height: "100%", width: "40%", justifyContent: "center", alignItems: "center", backgroundColor: "#512da7" }} >
+                                                <Text style={{ color: "#fff", fontSize: 18 }} >
+                                                    Save
                                              </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { this.setState({ modalVisible: false }) }} style={{ height: "100%", width: "40%", justifyContent: "center", alignItems: "center", backgroundColor: "#512da7" }} >
-                                            <Text style={{ color: "#fff", fontSize: 18 }} >
-                                                Close
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => { this.setState({ modalVisible: false }) }} style={{ height: "100%", width: "40%", justifyContent: "center", alignItems: "center", backgroundColor: "#512da7" }} >
+                                                <Text style={{ color: "#fff", fontSize: 18 }} >
+                                                    Close
                                              </Text>
-                                        </TouchableOpacity>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-                    </View>
+                            </Modal>
+                        </View>}
                 </View>
             </View>
         )

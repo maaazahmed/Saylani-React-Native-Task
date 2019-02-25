@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase'
@@ -6,7 +5,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import { connect } from "react-redux"
 import { currentUserAction, isLoaderAction } from "../../../store/action/action"
-
+import IP_ADDRESS from "../../../../IP"
 
 class Facebook extends Component {
 
@@ -14,63 +13,41 @@ class Facebook extends Component {
     this.props.isLoaderAction(true)
     try {
       const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+      const data = await AccessToken.getCurrentAccessToken();
       if (result.isCancelled) {
         this.props.isLoaderAction(false)
-        // handle this however suites the flow of your app
-        // console.log(result.isCancelled)
-        //  this.props.isLoaderAction(false)
-        // throw new Error('User cancelled request');
+
       }
-
-      // console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
-
-      // get the access token
-      const data = await AccessToken.getCurrentAccessToken();
-
-      if (!data) {
+      else if (!data) {
         this.props.isLoaderAction(false)
-        // handle this however suites the flow of your app
-        // throw new Error('Something went wrong obtaining the users access token');
         alert("Something went wrong obtaining the users access token")
       }
-
-      // create a new firebase credential with the token
-      const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-
-      // login with credential
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-
-      // console.log(JSON.stringify(firebaseUserCredential.user.toJSON()))
-      // console.log(firebaseUserCredential.user._user)
-      const user = firebaseUserCredential.user._user;
-
-      /********************************************** */
-      /********************************************** */
-      /********************************************** */
-      delete user.providerData
-      // console.log(user)
-      fetch(`http://192.168.100.197:8000/setUser`, {
-        method: "post",
-        body: JSON.stringify(user),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).then((res) => {
-        if (res.status == 200) {
-          console.log(res, "current")
-          this.props.currentUserAction(JSON.parse(res._bodyInit))
+      else {
+        const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+        const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+        const user = firebaseUserCredential.user._user;
+        delete user.providerData
+        fetch(`https://saylani-task-app.herokuapp.com/setUser`, {
+          method: "post",
+          body: JSON.stringify(user),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => {
+          if (res.status == 200) {
+            console.log(res, "current")
+            this.props.currentUserAction(JSON.parse(res._bodyInit))
+            this.props.isLoaderAction(false)
+            this.props.navigation.navigate("Dashboard")
+          }
+        }).catch((error) => {
+          console.log("Error:", error)
+          alert("Someting want to wrong !")
           this.props.isLoaderAction(false)
-          this.props.navigation.navigate("Dashboard")
-        }
-      }).catch((error) => {
-        console.log("Error:", error)
-        this.props.isLoaderAction(false)
 
-      })
-      /********************************************** */
-      /********************************************** */
-      /********************************************** */
+        })
+      }
     } catch (e) {
       console.error(e);
     }

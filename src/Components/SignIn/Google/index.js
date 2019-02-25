@@ -26,7 +26,7 @@ class Google extends Component {
             const user = firebaseUserCredential.user._user;
 
             delete user.providerData
-            fetch(`http://192.168.100.197:8000/setUser`, {
+            fetch(`https://saylani-task-app.herokuapp.com/setUser`, {
                 method: "post",
                 body: JSON.stringify(user),
                 headers: {
@@ -34,15 +34,13 @@ class Google extends Component {
                     'Content-Type': 'application/json',
                 },
             }).then((res) => {
-                // console.log(res)
                 if (res.status == 200) {
-                    // console.log(res, "current")
                     this.props.currentUserAction(JSON.parse(res._bodyInit))
                     this.props.isLoaderAction(false)
                     this.props.navigation.navigate("Dashboard")
                 }
             }).catch((error) => {
-                console.log("Error:", error)
+                alert("Someting want to wrong !")
                 this.props.isLoaderAction(false)
             })
         } catch (e) {

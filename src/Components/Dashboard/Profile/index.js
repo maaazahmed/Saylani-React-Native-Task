@@ -23,7 +23,7 @@ class Profile extends Component {
     componentDidMount() {
         const currentUser = this.props.currentUser.currentUser;
 
-        fetch("http://192.168.100.197:8000/getMyratting"
+        fetch("http://192.168.100.156:8000/getMyratting"
             , {
                 method: "post",
                 body: JSON.stringify({ uid: currentUser.uid }),
@@ -49,9 +49,8 @@ class Profile extends Component {
         const obj = {
             email: this.state.mailVal,
             uid: currentUser.uid
-
         }
-        fetch("http://192.168.100.197:8000/mailEdit"
+        fetch("http://192.168.100.156:8000/mailEdit"
             , {
                 method: "post",
                 body: JSON.stringify(obj),
@@ -80,7 +79,7 @@ class Profile extends Component {
             phoneNumber: this.state.phonNumerVale,
             uid: currentUser.uid
         }
-        fetch("http://192.168.100.197:8000/nhoneNumberEdit"
+        fetch("http://192.168.100.156:8000/nhoneNumberEdit"
             , {
                 method: "post",
                 body: JSON.stringify(obj),
@@ -177,14 +176,14 @@ class Profile extends Component {
                                 </View>
                             }
                         </View>
-                        <View style={{ flexDirection: "row", height: 50, width: "90%", marginTop: 20 }} >
+                        {/* <View style={{ flexDirection: "row", height: 50, width: "90%", marginTop: 20 }} >
                             <View style={{ width: 70, justifyContent: "center", alignItems: "center" }} >
                                 <Icon name="pin" style={{ color: "#512da7", fontSize: 30, }} />
                             </View>
                             <View style={{ flex: 1, justifyContent: "center" }} >
                                 <Text style={{ fontSize: 17, color: "#512da7" }}>Location</Text>
                             </View>
-                        </View>
+                        </View> */}
 
 
 
