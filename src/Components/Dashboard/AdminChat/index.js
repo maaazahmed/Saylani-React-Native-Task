@@ -51,21 +51,20 @@ class AdminChat extends Component {
                 }
                 let arr = []
                 console.log(obj)
-                database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
-                    var messages = snap.val()
-                    console.log(messages, "catch")
-
-                    for (key in messages) {
-                        arr.push({ ...messages[key], key })
-                    }
-                    console.log(arr)
-                    // this.props.messageListAction(arr)
-                })
             }
         }).catch((err) => {
             console.log("Fail ", err)
         })
-
+        
+        database.child(`rooms`).on("value", (snap) => {
+            var messages = snap.val()
+            console.log(messages, "catch")
+            // for (key in messages) {
+            //     arr.push({ ...messages[key], key })
+            // }
+            // console.log(arr)
+            // this.props.messageListAction(arr)
+        })
 
     }
 
