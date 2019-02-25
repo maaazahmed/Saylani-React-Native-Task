@@ -432,7 +432,7 @@ router.get("/allWorkers", (req, res) => {
 
 
 router.post("/svaeLocation", (req, res) => {
-    
+    console.log(req.body)
     db.connect(url, (err, suc) => {
         if (err) throw err;
         else {
