@@ -42,17 +42,19 @@ class AdminChat extends Component {
             method: "get"
         }).then((res) => {
             const data = JSON.parse(res._bodyInit)
+            this.props.adminDataAction(data)
             if (data) {
-                console.log(data, "catch")
                 const obj = {
                     senderId: currentUser.uid,
                     reseverId: data.uid,
                     messageText: messageVal
                 }
                 let arr = []
-                this.props.adminDataAction(obj)
+                console.log(obj)
                 database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).on("value", (snap) => {
                     var messages = snap.val()
+                    console.log(messages, "catch")
+
                     for (key in messages) {
                         arr.push({ ...messages[key], key })
                     }
@@ -73,14 +75,16 @@ class AdminChat extends Component {
     onMessageSend() {
         const { messageVal } = this.state
         const currentUser = this.props.currentUser.currentUser;
-        const chater = this.props.chater.finishedOrder;
+
+        const chater =this.props.adminData.adminData;
 
         if (messageVal !== "") {
             const obj = {
                 senderId: currentUser.uid,
-                reseverId: chater.selecterPerson.uid,
+                reseverId: chater.uid,
                 messageText: messageVal
             }
+            console.log(obj,"Maa")
             database.child(`rooms/${obj.senderId}/messages/${obj.reseverId}/`).push(obj)
             database.child(`rooms/${obj.reseverId}/messages/${obj.senderId}/`).push(obj)
             this.setState({
@@ -94,6 +98,7 @@ class AdminChat extends Component {
     render() {
         const messageList = this.props.messageList.messageList
         const currentUser = this.props.currentUser.currentUser;
+       
         return (
             <View style={{ flex: 1, backgroundColor: "#f3f3f3" }} >
                 <View style={{ flex: 1, backgroundColor: "#f3f3f3", }} >
@@ -158,6 +163,7 @@ const mapStateToProp = (state) => {
         currentUser: state.root,
         chater: state.root,
         messageList: state.root,
+        adminData:state.root,
     });
 };
 const mapDispatchToProp = (dispatch) => {
