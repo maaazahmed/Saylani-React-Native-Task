@@ -46,8 +46,7 @@ class Hiring extends Component {
                                 </View>
                                 <View style={{ flexDirection: "row", height: 50, justifyContent: "center", }} >
                                     <TouchableOpacity onPress={()=>this.props.navigation.navigate("BookPerson")} style={{ backgroundColor: "#512da7", flex: 1, width: "50%", alignItems: "center", justifyContent: "center", }} >
-                                        <View style={{ width: "50%", height: "100%", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }} >
-                                            <Icon name="checkmark-circle" style={{ color: "#fff", fontSize: 20, }} />
+                                        <View style={{ width: "50%", height: "100%", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
                                             <Text style={{ fontSize: 17, color: "#fff", }} >Book Now</Text>
                                         </View>
                                     </TouchableOpacity>

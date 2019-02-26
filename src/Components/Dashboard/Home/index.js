@@ -1,51 +1,43 @@
 import React, { Component } from 'react';
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
     TextInput,
     TouchableOpacity,
-    ScrollView,
     Image,
     FlatList,
     Modal,
     Dimensions,
-
 } from 'react-native';
 import { Icon } from "native-base"
 import { connect } from "react-redux"
-import { categoryListAction, currentCategoryAction, adminDataAction } from "../../../store/action/action"
-import SearchInput, { createFilter } from 'react-native-search-filter';
-import MapView, { Marker, AnimatedRegion } from 'react-native-maps';
+import {
+    categoryListAction,
+    currentCategoryAction,
+    adminDataAction
+} from "../../../store/action/action"
+import { createFilter } from 'react-native-search-filter';
+import MapView,
+{
+    Marker,
+    AnimatedRegion
+} from 'react-native-maps';
 
 
 const KEYS_TO_FILTERS = ["categoryVal"];
 const { width, height } = Dimensions.get('window');
-
-
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
 const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const SPACE = 0.01;
-
-
-
-
-
 class Home extends Component {
     constructor() {
         super()
         this.state = {
             searchTerm: "",
             modalVisible: false,
-            // a: {
-            //     latitude: LATITUDE,
-            //     longitude: LONGITUDE,
-            // },
-
             latitude: LATITUDE,
             longitude: LONGITUDE,
             routeCoordinates: [],
@@ -58,7 +50,6 @@ class Home extends Component {
         }
     }
 
-    // https://saylani-task-app.herokuapp.com/
     componentWillMount() {
         fetch("https://saylani-task-app.herokuapp.com/getCategory", {
             method: "get"
@@ -68,8 +59,6 @@ class Home extends Component {
                 this.props.categoryListAction(data)
             })
             .catch((err) => { console.log(err) })
-
-
         navigator.geolocation.getCurrentPosition(
             position => { },
             error => alert(error.message),
@@ -79,24 +68,17 @@ class Home extends Component {
                 maximumAge: 1000
             }
         );
-
-
-        fetch("http://192.168.100.156:8000/getAdmin", {
+        fetch("https://saylani-task-app.herokuapp.com/getAdmin", {
             method: "get"
         }).then((res) => {
             const data = JSON.parse(res._bodyInit)
-            // console.log(data)
             this.props.adminDataAction(data)
         }).catch((err) => {
             console.log("Fail ", err)
         })
-
-
-
-
-
-
     }
+
+
     componentDidMount() {
         const currentUser = this.props.currentUser.currentUser.location
         if (currentUser === undefined) {
@@ -183,15 +165,12 @@ class Home extends Component {
     }
 
     adminChat() {
-        // const currentUser = this.props.currentUser.currentUser
-        // console.log(currentUser,"-----")
         this.props.navigation.navigate("AdminChat")
     }
 
- 
+
 
     render() {
-        // console.log(this.state.coordinate, "this.state.coordinate")
         let categoryList = this.props.categoryList.cagoryList;
         const filteredData = categoryList.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
         return (
@@ -207,7 +186,6 @@ class Home extends Component {
                     right: 0,
                     bottom: 55
                 }} >
-                    {/* <ion-icon name="chatboxes"></ion-icon> */}
                     <View style={{ height: "20%", justifyContent: "center" }} >
                         <View style={{ flex: 1, justifyContent: "center", padding: 15, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} >
                             <Text style={{ fontSize: 19, color: "#fff", fontWeight: "300" }} > Categories</Text>
@@ -215,7 +193,6 @@ class Home extends Component {
                                 <TouchableOpacity onPress={this.adminChat.bind(this)} activeOpacity={0.5} >
                                     <Icon name="chatboxes" style={{ fontSize: 23, color: "#fff" }} />
                                 </TouchableOpacity>
-
                                 <TouchableOpacity onPress={() => this.setState({ modalVisible: true })} activeOpacity={0.5} >
                                     <Icon name="pin" style={{ fontSize: 23, color: "#fff" }} />
                                 </TouchableOpacity>

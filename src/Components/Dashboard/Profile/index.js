@@ -176,18 +176,7 @@ class Profile extends Component {
                                 </View>
                             }
                         </View>
-                        {/* <View style={{ flexDirection: "row", height: 50, width: "90%", marginTop: 20 }} >
-                            <View style={{ width: 70, justifyContent: "center", alignItems: "center" }} >
-                                <Icon name="pin" style={{ color: "#512da7", fontSize: 30, }} />
-                            </View>
-                            <View style={{ flex: 1, justifyContent: "center" }} >
-                                <Text style={{ fontSize: 17, color: "#512da7" }}>Location</Text>
-                            </View>
-                        </View> */}
-
-
-
-                    </View>
+                </View>
 
                 </View>
                 <Modal

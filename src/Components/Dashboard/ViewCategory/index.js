@@ -38,7 +38,7 @@ class ViewCategory extends Component {
             id: currentCategory._id
         }
         let arr = []
-        fetch(`http://192.168.100.197:8000/getServieces`, {
+        fetch(`http://192.168.100.156:8000/getServieces`, {
             method: "post",
             body: JSON.stringify(obj),
             headers: {

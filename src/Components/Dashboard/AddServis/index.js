@@ -45,7 +45,7 @@ class AddServis extends Component {
         }
         console.log(obj)
 
-        fetch("http://192.168.100.197:8000/addService", {
+        fetch("http://192.168.100.156:8000/addService", {
             method: "post",
             body: JSON.stringify(obj),
             headers: {

@@ -76,6 +76,12 @@ const MainNavigator = createStackNavigator({
             header: null
         },
     },
+    Hiring: {
+        screen: Hiring,
+        navigationOptions: {
+            header: null
+        },
+    },
     Dashboard: {
         screen: Dashboard,
         navigationOptions: {
@@ -88,12 +94,7 @@ const MainNavigator = createStackNavigator({
     AddServis: {
         screen: AddServis,
     },
-    Hiring: {
-        screen: Hiring,
-        navigationOptions: {
-            header: null
-        },
-    },
+
     BookPerson: {
         screen: BookPerson,
 
